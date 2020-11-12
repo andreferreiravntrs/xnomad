@@ -1,0 +1,82 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+}
+
+.container {
+  padding-top: calc(5 * var(--spacingUnitDesktop)) !important;
+  padding-bottom: calc(5 * var(--spacingUnitDesktop)) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: calc(-1 * var(--spacingUnitDesktop));
+  margin-right: calc(-1 * var(--spacingUnitDesktop));
+
+  @media (--viewportMedium) {
+    margin-left: calc(-2 * var(--spacingUnit));
+    margin-right: calc(-2 * var(--spacingUnit));
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+}
+
+.row.padding {
+  @media (--viewportLargeWithPaddings) {
+    padding: 0 8.33333%;
+  }
+}
+
+.item {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  padding: calc(2 * var(--spacingUnit));
+
+  @media (--viewportMedium) {
+    flex-basis: 33.33333%;
+  }
+
+  @media (--viewportLargeWithPaddings) {
+    flex-basis: 20%;
+  }
+}
+
+.h4 {
+  @apply --H4FontStyles;
+  flex-basis: 100%;
+  text-align: left;
+  color: var(--very-dark-grayish-orange);
+  margin-top: 0;
+  margin-bottom: calc(4 * var(--spacingUnit));
+  padding: 0 calc(1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    flex-basis: calc(100% - 8.33333%);
+    margin-left: 8.33333%;
+    padding: 0 calc(2 * var(--spacingUnit));
+  }
+}

@@ -1,0 +1,123 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+  background-color: var(--matterColorBrown);
+  margin-top: calc(5 * var(--spacingUnitDesktop));
+  margin-bottom: 0;
+}
+
+.container {
+  padding-top: calc(8 * var(--spacingUnitDesktop)) !important;
+  padding-bottom: calc(8 * var(--spacingUnitDesktop)) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.h4 {
+  @apply --H4FontStyles;
+  text-align: left;
+  color: var(--matterColorLight);
+  margin-bottom: calc(8 * var(--spacingUnit));
+  margin-top: 0;
+  padding: 0 calc(2 * var(--spacingUnit));
+
+  @media (--viewportLargeWithPaddings) {
+    margin-left: 8.33333%;
+    margin-right: 8.33333%;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  @media (--viewportMedium) {
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  @media (--viewportLargeWithPaddings) {
+    margin-left: 8.33333%;
+    margin-right: 8.33333%;
+  }
+}
+
+.listItem {
+  flex: 1;
+  flex-basis: 20$;
+  padding: calc(2 * var(--spacingUnit));
+  display: flex;
+  flex-direction: row;
+
+  @media (--viewportMedium) {
+    flex-direction: column;
+  }
+}
+
+.listItemImage {
+  display: block;
+  margin: 0 calc(2 * var(--spacingUnit));
+  width: 100%;
+  max-width: 53px;
+  max-height: 53px;
+
+  @media (--viewportMedium) {
+    margin: 0 auto calc(4 * var(--spacingUnit)) auto;
+  }
+
+  @media (--viewportLarge) {
+    max-width: 88px;
+    max-height: 88px;
+  }
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0 calc(2 * var(--spacingUnit));
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+}
+
+.listItemTitle {
+  @apply --H6FontStyles;
+  color: var(--matterColorLight);
+  text-align: left;
+  margin-bottom: calc(1 * var(--spacingUnitDesktop));
+}
+
+.listItemDescription {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorBeige);
+  text-align: left;
+}

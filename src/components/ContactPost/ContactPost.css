@@ -1,0 +1,56 @@
+@import '../../marketplace.css';
+
+.contactPost {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  @media (--viewportMedium) {
+    flex-direction: column;
+  }
+}
+
+.featuredLocationImage {
+  width: auto;
+  max-width: 100%;
+  max-height: 160px;
+  margin-right: calc(4 * var(--spacingUnit));
+
+  @media (--viewportMedium) {
+    margin: 0;
+    max-height: 300px;
+    margin-bottom: 30px;
+  }
+
+  @media (--viewportLarge) {
+    max-height: 350px;
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title {
+  @apply --H6FontStyles;
+  margin-bottom: 5px;
+  color: var(--matterColorGreyDark);
+}
+
+.subTitle {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGrey2);
+  margin: 0;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.downloadBtn {
+  @apply --marketplaceButtonStylesPrimary-outlined;
+  align-self: flex-start;
+  width: auto;
+}

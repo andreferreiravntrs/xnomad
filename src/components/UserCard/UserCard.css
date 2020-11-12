@@ -1,0 +1,131 @@
+@import '../../marketplace.css';
+
+.root {
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+}
+
+.avatar {
+  flex-shrink: 0;
+  margin-right: 36px;
+}
+
+.info {
+  flex: 1;
+}
+
+.heading {
+  @apply --marketplaceH2FontStyles;
+  display: inline;
+  margin: 0 0 0 0;
+  font-size: 18px;
+  font-weight: normal;
+  width: 90px;
+
+  @media (--viewportMedium) {
+    margin: 0 0 0 0;
+  }
+}
+
+.link {
+  white-space: nowrap;
+  @apply --marketplaceLinkGreen;
+}
+
+.mobileBio,
+.desktopBio {
+  /* Preserve newlines, but collapse other whitespace */
+  white-space: pre-line;
+  margin: 18px 0 0 0;
+  transition: all 1s ease-in;
+  @apply --marketplaceH4FontStyles;
+
+  @media (--viewportMedium) {
+    margin: 18px 0 0 0;
+  }
+}
+
+.mobileBio {
+  @media (--viewportMedium) {
+    display: none;
+  }
+}
+
+.desktopBio {
+  display: none;
+
+  @media (--viewportMedium) {
+    margin-top: 16px;
+    display: block;
+  }
+}
+
+.showMore {
+  @apply --marketplaceLinkStyles;
+  @apply --marketplaceH4FontStyles;
+  margin: 0 0 0 5px;
+}
+
+.links {
+  @apply --marketplaceH4FontStyles;
+  display: inline;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 2px;
+
+  @media (--viewportMedium) {
+    margin: 0 0 0 0;
+  }
+}
+
+.withBioMissingAbove {
+  @media (--viewportMedium) {
+    /* Fix baseline alignment if bio is missing from above */
+  }
+}
+
+.linkSeparator {
+  margin: 0 10px;
+  color: var(--successColor);
+}
+
+.headingRow {
+  display: inline;
+}
+
+.editProfileDesktop {
+  @apply --marketplaceH4FontStyles;
+  display: none;
+  margin-bottom: 0;
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--successColor);
+  
+  @media (--viewportMedium) {
+    display: inline;
+  }
+}
+
+.editProfileMobile {
+  @apply --marketplaceH4FontStyles;
+  display: inline;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--successColor);
+
+  @media (--viewportMedium) {
+    display: none;
+  }
+}
+
+.contact {
+  @apply --marketplaceLinkGreen;
+  @apply --marketplaceH4FontStyles;
+  margin: 0;
+  font-weight: bold;
+  font-size: 18px;
+}

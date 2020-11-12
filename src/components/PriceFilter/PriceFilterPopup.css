@@ -1,0 +1,64 @@
+@import '../../marketplace.css';
+
+.root {
+  position: relative;
+  display: inline-block;
+
+  &:last-of-type {
+    padding-right: 0;
+  }
+}
+
+.label {
+  @apply --marketplaceSearchFilterLabelFontStyles;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  border-radius: 4px;
+  border: none;
+  padding: calc(3 * var(--spacingUnit)) calc(4 * var(--spacingUnit));
+  border-radius: 0;
+  border-bottom: 4px solid var(--matterColorLight);
+
+  &:hover {
+    box-shadow: none;
+    border-color: var(--matterColorDark);
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.labelSelected {
+  @apply --marketplaceButtonStyles;
+  @apply --marketplaceSearchFilterLabelFontStyles;
+  font-weight: var(--fontWeightSemiBold);
+
+  margin: calc(1 * var(--spacingUnit)) calc(1 * var(--spacingUnit));
+  padding: calc(2 * var(--spacingUnit)) calc(3 * var(--spacingUnit));
+  background-color: var(--matterColorGreyDark);
+  width: auto;
+  height: auto;
+  min-height: 0;
+  border-radius: 4px;
+  border: 1px solid var(--marketplaceColor);
+  text-transform: none;
+
+  &:hover,
+  &:focus {
+    background-color: var(--matterColor);
+  }
+
+  .arrowIcon {
+    @apply --marketplaceSearchFilterLabelFontStyles; 
+  }
+}
+
+
+.arrowIcon {
+  height: 10px;
+  width: 10px;
+  margin-left: calc(2 * var(--spacingUnit));
+}

@@ -1,0 +1,66 @@
+@import '../../marketplace.css';
+
+.root {
+  @apply --marketplaceModalFormRootStyles;
+
+  justify-content: flex-start;
+
+  @media (--viewportMedium) {
+    justify-content: space-between;
+  }
+}
+
+.name {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+
+  @media (--viewportMedium) {
+    margin-top: 32px;
+  }
+}
+
+.firstNameRoot {
+  width: calc(34% - 9px);
+}
+
+.lastNameRoot {
+  width: calc(66% - 9px);
+}
+
+.password {
+  @apply --marketplaceModalPasswordMargins;
+}
+
+.bottomWrapper {
+  @apply --marketplaceModalBottomWrapper;
+}
+
+.bottomWrapperText {
+  @apply --marketplaceModalBottomWrapperText;
+}
+
+.termsText {
+  @apply --marketplaceModalHelperText;
+  padding: 0;
+}
+
+.termsLink {
+  @apply --marketplaceModalHelperLink;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.acceptTerms {
+  display: flex;
+  align-items: center;
+
+  & input {
+    width: 20px;
+    margin-right: 20px;
+  }
+
+}

@@ -1,0 +1,104 @@
+@import '../../marketplace.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.bookingDates {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+
+  /* Ensure that calendar dropdown gets some stacking context relative to other form items below */
+  z-index: 1;
+}
+
+.priceBreakdownContainer {
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.priceBreakdownTitle {
+  @apply --H6FontStyles;
+  color: var(--matterColorGreyDark);
+  margin-bottom: 0;
+}
+
+.pricingList {
+  margin: 0;
+  padding: 0;
+}
+
+.pricingListItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0 16px 0;
+  border-bottom: 1px solid #868f92;
+}
+
+.pricingListItem:last-child {
+  border-bottom: none;
+}
+
+.pricingListItem label {
+  @apply --BodyFontStyles;
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: 400;
+  color: var(--matterColorGrey2);
+  padding: 0;
+}
+
+.pricingListItem span {
+  @apply --BodyFontStyles;
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: 600;
+  color: var(--matterColorGrey3);
+}
+
+.receipt {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.error {
+  color: var(--failColor);
+  margin: 0 24px;
+  display: inline-block;
+}
+
+.timeSlotsError {
+  @apply --marketplaceH4FontStyles;
+  color: var(--failColor);
+  margin: 0 24px 12px 24px;
+
+  @media (--viewportMedium) {
+    margin: 0 0 12px 0;
+  }
+}
+
+.smallPrint {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGrey2);
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.submitButtonWrapper {
+  flex-shrink: 0;
+  padding: 0 24px 24px 24px;
+  width: 100%;
+  margin-bottom: 24px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+    width: 100%;
+  }
+}
+
+.submitButton {
+    @apply --marketplaceButtonStylesPrimary;
+}

@@ -1,0 +1,31 @@
+/* Image carousel slideshow buttons */
+:global .carousel.carousel-slider .control-arrow {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  z-index: 1;
+
+  &::before {
+    --arrowSide: 18px;
+    border: none;
+    width: var(--arrowSide);
+    height: var(--arrowSide);
+    background-image: url('./assets/sliderArrow.svg');
+    background-size: var(--arrowSide) var(--arrowSide);
+  }
+
+  &:nth-child(3)::before {
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Featured listing carousel width */
+:global .alice-carousel {
+  margin-left: -10px;
+}
+:global .alice-carousel__wrapper {
+  width: calc(100% + 20px);
+}

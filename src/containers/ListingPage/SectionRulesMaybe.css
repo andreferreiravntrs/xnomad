@@ -1,0 +1,40 @@
+@import '../../marketplace.css';
+
+.root {
+  margin-top: 20px;
+  padding: 0 24px;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    padding: 0;
+  }
+}
+
+.title {
+  /* Font */
+  @apply --marketplaceH3FontStyles;
+  /* color: var(--matterColorAnti); */
+
+  margin-top: 0;
+  margin-bottom: 13px;
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+
+.rules {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: normal;
+
+  /* Preserve newlines, but collapse other whitespace */
+  white-space: pre-line;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,791 @@
+@import '../../marketplace.css';
+
+.root {
+}
+
+.pageRoot {
+  display: flex;
+  padding-bottom: 90px;
+  @media (--viewportLarge) {
+    padding-bottom: 0;
+  }
+}
+
+.loadingText {
+  margin: 24px;
+}
+
+.errorText {
+  color: var(--failColor);
+  margin: 24px;
+}
+
+.sectionImages {
+}
+
+.threeToTwoWrapper {
+  /* Layout */
+  display: block;
+  width: 100%;
+  position: relative;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+
+  @media (--viewportLarge) {
+    /* padding: 36px 36px 0 36px; */
+  }
+}
+
+/* Firefox doesn't support image aspect ratio inside flexbox */
+.aspectWrapper {
+  position: relative; /* allow positioning own listing action bar */
+  background-color: var(--matterColorNegative); /* Loading BG color */
+
+  @media (--viewportMedium) {
+    padding-bottom: 0; /* No fixed aspect on desktop layouts */
+  }
+}
+
+.actionBar {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: 13px;
+  left: 38px;
+  width: calc(100% - 76px);
+  color: var(--matterColorNegative);
+  background-color: var(--matterColor);
+  z-index: 1; /* bring on top of mobile image */
+
+  /* Action bar prevents the image click events going to the parent and
+   should not show a pointer */
+  cursor: initial;
+
+  border-radius: var(--borderRadius);
+}
+
+.ownListingText {
+  @apply --marketplaceH4FontStyles;
+  margin: 14px 12px 11px 24px;
+
+  @media (--viewportMedium) {
+    margin: 25px 12px 22px 24px;
+  }
+}
+
+.ownListingTextPendingApproval {
+  color: var(--attentionColor);
+}
+
+.closedListingText {
+  @apply --marketplaceH4FontStyles;
+  margin: 14px 12px 11px 24px;
+  text-align: center;
+  width: 100%;
+
+  @media (--viewportMedium) {
+    margin: 25px 12px 22px 24px;
+  }
+}
+
+.editListingLink {
+  @apply --marketplaceH4FontStyles;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 14px 24px 11px 12px;
+  color: var(--matterColorNegative);
+
+  transition: var(--transitionStyleButton);
+
+  &:hover {
+    color: var(--matterColorLight);
+    text-decoration: none;
+  }
+
+  @media (--viewportMedium) {
+    margin: 0;
+    padding: 25px 24px 22px 12px;
+  }
+}
+
+.editIcon {
+  margin: -6px 7px 0 0;
+}
+
+.rootForImage {
+  position: static;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+  height: calc(0.50 * 144vw);
+  max-height: 88vh;
+  object-fit: cover;
+  border-radius: var(--borderRadius);
+
+  transition: var(--transitionStyleButton);
+
+  @media (--viewportMedium) {
+
+    &:hover {
+      transform: scale(1.005);
+      box-shadow: var(--boxShadowListingCard);
+    }
+  }
+}
+
+.viewPhotos {
+  @apply --marketplaceTinyFontStyles;
+  font-weight: var(--fontWeightMedium);
+
+  /* Position and dimensions */
+  position: absolute;
+  bottom: 19px;
+  right: 24px;
+  margin: 0;
+  padding: 6px 13px 8px 13px;
+
+  /* Colors */
+  background-color: var(--matterColorLight);
+
+  /* Borders */
+  border: none;
+  border-radius: var(--borderRadius);
+
+  cursor: pointer;
+  transition: var(--transitionStyleButton);
+
+  &:hover {
+    background-color: var(--marketplaceColor);
+    color: var(--matterColorLight);
+  }
+
+  @media (--viewportMedium) {
+    margin: 0;
+  }
+}
+
+.carouselModalScrollLayer {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(1, 1, 1, 0.92);
+}
+
+.carouselModalContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.contentContainer {
+  @media (--viewportMedium) {
+    max-width: 1056px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  @media (--viewportLarge) {
+    max-width: 1383px;
+    padding: 0 36px;
+    margin: 0 auto 117px;
+  }
+
+  @media (--viewportXLarge) {
+    max-width: 1500px;
+    padding: 0;
+  }
+}
+
+.mainContent {
+  flex-basis: 100%;
+  margin: 23px 0;
+
+  @media (--viewportMedium) {
+    margin-top: 50px;
+    margin-bottom: 51px;
+    flex-shrink: 0;
+  }
+
+  @media (--viewportLarge) {
+    margin-top: 50px;
+    margin-bottom: 0px;
+    /* contentContainer's full width - (bookingColumn + two paddings + margin + border) */
+    max-width: calc(100% - 464px);
+    flex-basis: calc(100% - 464px);
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+}
+
+.bookingPanel {
+  width: 100%;
+  @media (--viewportLarge) {
+    display: block;
+    margin-top: 70px;
+    margin-left: 24px;
+
+    /* The calendar needs 312px */
+    flex-basis: 420px;
+    flex-shrink: 0;
+  }
+}
+
+.sectionAvatar {
+  /* Position (over the listing image)*/
+  margin-left: 24px;
+  margin-top: -31px;
+
+  /* Rendering context to the same lavel as listing image */
+  position: relative;
+
+  /* Flex would give too much width by default. */
+  width: 60px;
+
+  @media (--viewportMedium) {
+    position: absolute;
+    top: -49px;
+    margin-left: 0;
+    margin-top: 0;
+  }
+}
+
+.avatarMobile {
+  display: flex;
+
+  @media (--viewportMedium) {
+    display: none; /* Hide the medium avatar from the bigger screens */
+  }
+}
+
+.avatarDesktop {
+  display: none; /* Hide the large avatar from the smaller screens */
+
+  @media (--viewportMedium) {
+    display: flex;
+  }
+}
+
+.sectionFootfall {
+  margin: 24px;
+  border-bottom: 1px solid var(--matterColorNegative);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media(--viewportMedium) {
+    margin: 0;
+  }
+}
+
+.sectionFootfallTitle {
+  @apply --marketplaceH3FontStyles;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.sectionFootfallData {
+  @apply --marketplaceTinyFontStyles;
+  font-size: 16px;
+  margin: 0 0 20px 0;
+}
+
+.sectionFootfallGraph {
+  height: 200px;
+}
+
+.sectionHeading {
+
+  @media (--viewportMedium) {
+    display: flex;
+    padding-right: 20px;
+  }
+}
+
+.sectionHeadingFeatures {
+  margin-top: 3px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+
+  & div:first-child {
+    border-right: 1px solid var(--matterColorNegative);
+  }
+}
+
+.sectionHeadingFeature {
+  @apply --marketplaceTinyFontStyles;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  align-self: start;
+
+  &:last-child {
+    padding-right: 0;
+  }
+
+  &:first-child {
+    padding-left: 0;
+  }
+}
+
+.faded {
+  filter: opacity(33%);
+}
+
+.sectionHeadingIcon {
+  width: 30px;
+  height: 30px;
+  padding-bottom: 10px;
+
+  @media (--viewportMedium) {
+    width: 40px;
+    height: 40px;
+    padding-bottom: 0;
+  }
+}
+
+.desktopPriceContainer {
+  display: none;
+
+  @media (--viewportLarge) {
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    margin: 0 48px 0 0;
+    padding: 0;
+  }
+}
+
+.desktopPriceValue {
+  /* Font */
+  @apply --marketplaceH1FontStyles;
+  color: var(--marketplaceColor);
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+}
+
+.desktopPerUnit {
+  /* Font */
+  @apply --marketplaceH5FontStyles;
+  color: var(--matterColor);
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.heading {
+  margin-bottom: 0;
+  padding: 0 24px;
+  width: 100%;
+  align-items: center;
+
+  @media (--viewportMedium) {
+    padding: 0;
+    display: flex;
+  }
+}
+
+.title {
+  /* Font */
+  @apply --marketplaceH1FontStyles;
+  color: var(--matterColorDark);
+
+  /* Layout */
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  @media (--viewportMedium) {
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+}
+
+.location {
+  margin: 0;
+  font-weight: normal;
+}
+
+.author {
+  flex: 1;
+  @apply --marketplaceH4FontStyles;
+  margin-top: 7px;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: var(--matterColor);
+  }
+
+}
+
+.centerText {
+  display: inline-block;
+  text-align: left;
+}
+
+.authorNameLink {
+  color: var(--marketplaceColor);
+  font-weight: bold;
+}
+
+.contactWrapper {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 14px;
+
+  @media (--viewportMedium) {
+    display: inline-block;
+  }
+}
+
+.separator {
+  margin: 0 1px;
+  visibility: hidden;
+}
+
+.separator2 {
+  margin: 0 10px;
+  color: var(--marketplaceColor);
+
+}
+
+.contactLink {
+  @apply --marketplaceLinkStyles;
+  @apply --marketplaceH4FontStyles;
+  margin: 0;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.sectionDescription {
+  padding: 24px 0;
+  margin: 0 24px 30px;
+  border-bottom: 1px solid var(--matterColorNegative);
+  border-top: 1px solid var(--matterColorNegative);
+
+  @media (--viewportMedium) {
+    padding: 24px 0;
+    margin: 0 0 30px;
+  }
+}
+
+.descriptionTitle {
+  /* Font */
+  @apply --marketplaceH3FontStyles;
+  /* color: var(--matterColorAnti); */
+
+  margin-top: 0;
+  /* margin-bottom: 13px; */
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.description {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 16px;
+  text-align: justify;
+
+  /* Preserve newlines, but collapse other whitespace */
+  white-space: pre-line;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 32px;
+  }
+}
+
+.descriptionTruncateContainer {
+  padding-top: 15px;
+  margin-bottom: 0;
+}
+
+.descriptionTruncate {
+    @apply --marketplaceH4FontStyles;
+    color: var(--matterColorDark);
+    font-weight: 600;
+    padding: 0;
+    border: none;
+
+    &:hover{
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    &:focus{
+      outline: none;
+    }
+}
+
+.arrowIcon {
+  height: 10px;
+  width: 10px;
+  margin-left: calc(2 * var(--spacingUnit));
+}
+
+.flipped {
+  transform: rotate(180deg);
+}
+
+.sectionFeatures {
+  padding: 0 24px;
+  margin-right: 24px;
+
+  @media (--viewportMedium) {
+    border-right: 1px solid var(--matterColorNegative);
+    padding: 0 30px 0 0 ;
+    margin-right: 30px;
+  }
+}
+
+.featuresTitle {
+  /* Font */
+  @apply --marketplaceH3FontStyles;
+
+  margin-top: 0;
+  margin-bottom: 16px;
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+
+.sectionMap {
+  padding: 0 0 35px 0;
+  margin: 35px 24px;
+  width: calc(100% - 48px);
+  border-bottom: 1px solid var(--matterColorNegative);
+
+  @media (--viewportMedium) {
+    padding: 0 0 24px 0;
+    margin: 35px 0;
+    width: 100%;
+  }
+}
+
+.locationTitle {
+  /* Font */
+  @apply --marketplaceH3FontStyles;
+  color: var(--matterColorAnti);
+
+  margin-top: 0;
+  margin-bottom: 20px;
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 28px;
+  }
+}
+
+.sectionReviews {
+  padding: 0 24px;
+  margin-bottom: 5px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+  @media (--viewportLarge) {
+    margin-bottom: 3px;
+  }
+}
+
+.reviewsHeading {
+  @apply --marketplaceH3FontStyles;
+  color: var(--matterColorAnti);
+
+  margin: 52px 0 20px 0;
+
+  @media (--viewportMedium) {
+    margin: 53px 0 27px 0;
+  }
+  @media (--viewportLarge) {
+    margin: 50px 0 26px 0;
+  }
+}
+
+.sectionHost {
+  padding: 0 24px;
+  margin-bottom: 5px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+  @media (--viewportLarge) {
+    margin-bottom: 3px;
+  }
+}
+
+.yourHostHeading {
+  @apply --marketplaceH3FontStyles;
+  color: var(--matterColorAnti);
+
+  margin: 54px 0 23px 0;
+
+  @media (--viewportMedium) {
+    margin: 53px 0 27px 0;
+  }
+  @media (--viewportLarge) {
+    margin: 53px 0 27px 0;
+  }
+}
+
+.enquiryModalContent {
+  flex-grow: 1;
+  display: flex;
+}
+
+.enquiryForm {
+  flex-grow: 1;
+  margin: 70px 0 100px 0;
+
+  @media (--viewportMedium) {
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    margin: 0;
+  }
+}
+
+.enquirySubmitButtonWrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background-color: var(--matterColorLight);
+
+  @media (--viewportMedium) {
+    position: static;
+    padding: 0;
+    margin-top: auto;
+  }
+}
+
+.map {
+  /* Dimensions: Map takes all available space from viewport (excludes action button and section title) */
+  height: calc(100vh - 193px);
+  width: 100%;
+
+  /* Static map: dimensions are 640px */
+  /* max-width: 640px; */
+  max-height: 640px;
+  background-color: #eee;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+
+  @media (--viewportMedium) {
+    height: 75vh;
+  }
+
+  @media (--viewportLarge) {
+    height: 417px;
+  }
+}
+
+.longWord {
+  /* fallback option */
+  word-break: break-all;
+  /* use break-word if available */
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.bottomContainer {
+  @media (--viewportMedium) {
+    display: flex;
+  }
+}
+
+.header {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.sectionGallery {
+  margin-bottom: 35px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+}
+
+.sectionGalleryTitle {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 26px;
+}
+
+.gallery {
+  align-self: center;
+  width: 100%;
+
+  @media(--viewportLarge)  {
+    width: 67%;
+  }
+}
+
+.galleryImageContainer {
+  margin-bottom: 24px;
+}
+
+.galleryImage {
+  display: none;
+}
+
+.gallerySelectedImage {
+  display: block;
+}
+
+.galleryThumbnails {
+  padding: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 100px);
+  grid-gap: 10px;
+}
+
+.galleryThumbnailContainer {
+  color: #FFF;
+  position: relative;
+  display: inline-block;
+
+  &::after{
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+  }
+}
+
+.galleryThumbnailContainerSelected {
+  &::after {
+    content: unset;
+  }
+}
+
+.galleryThumbnail {
+  cursor: pointer;
+}

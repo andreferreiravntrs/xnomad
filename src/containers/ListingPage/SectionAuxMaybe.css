@@ -1,0 +1,72 @@
+@import '../../marketplace.css';
+
+.root {
+  margin: 20px 24px 0 24px;
+  padding-top: 20px;
+  border-top: solid;
+  border-top-color: rgb(231, 231, 231);
+  border-top-width: 1px;
+  @media (--viewportMedium) {
+    margin: 20px 0 0 0;
+  }
+}
+
+.title {
+  /* Font */
+  @apply --marketplaceH3FontStyles;
+  /* color: var(--matterColorAnti); */
+
+  margin-top: 0;
+  margin-bottom: 13px;
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+.subTitle {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.sectionHeadingFeatures {
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    grid-column-gap: 20px;
+
+    @media (max-width: 500px) {
+        grid-template-columns: repeat(2, 45%);
+      }
+}
+
+.sectionHeadingFeature {
+    @apply --marketplaceTinyFontStyles;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    align-self: start;
+    
+    &:last-child {
+      padding-right: 0;
+    }
+    
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  .faded {
+    filter: opacity(33%);    
+  }
+
+  .sectionHeadingIcon {
+    width: 35px;
+    height: 35px;
+    padding-bottom: 10px;
+  
+    @media (--viewportMedium) {    
+      width: 40px;
+      height: 40px;
+      padding-bottom: 0;
+    }
+  }
+

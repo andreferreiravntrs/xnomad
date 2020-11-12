@@ -1,0 +1,189 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+}
+
+.container {
+  padding-top: calc(5 * var(--spacingUnitDesktop)) !important;
+  padding-bottom: calc(5 * var(--spacingUnitDesktop)) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  @media (--viewportLarge) {
+    margin-left: calc(-2 * var(--spacingUnit));
+    margin-right: calc(-2 * var(--spacingUnit));
+  }
+}
+
+.h4 {
+  @apply --H4FontStyles;
+  flex-basis: 100%;
+  text-align: left;
+  color: var(--very-dark-grayish-orange);
+  margin-top: 0;
+  margin-bottom: calc(4 * var(--spacingUnit));
+  padding: 0 calc(1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    flex-basis: calc(100% - 8.33333%);
+    margin-left: 8.33333%;
+    padding: 0 calc(2 * var(--spacingUnit));
+  }
+}
+
+.item {
+  margin: calc(1 * var(--spacingUnitDesktop)) calc(-2 * var(--spacingUnitDesktop));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 280px;
+
+  @media (--viewportMedium) {
+    margin: calc(1 * var(--spacingUnitDesktop));
+    height: 500px;
+  }
+
+  @media (--viewportLarge) {
+    margin: calc(2 * var(--spacingUnit));
+    height: 725px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: var(--light-grayish-orange);
+  cursor: pointer;
+  width: 100%;
+  min-height: 180px;
+  margin-top: -25%;
+
+  @media (--viewportMedium) {
+    min-height: 220px;
+    margin-left: 8.33333%;
+    width: 83.33333%;
+    margin-top: -20%;
+  }
+
+  @media (--viewportLarge) {
+    min-height: 353px;
+  }
+
+  @media (--viewportLargeWithPaddings) {
+    width: 58.33333%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: stretch;
+  }
+}
+
+.cardHeader {
+  margin: calc(1 * var(--spacingUnitDesktop));
+  width: 112px;
+  height: 112px;
+
+  @media (--viewportMedium) {
+    width: 224px;
+    height: 224px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0;
+    width: 100%;
+    height: auto;
+    flex: 1;
+    flex-basis: 315px;
+  }
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+  }
+}
+
+.cardCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: calc(4 * var(--spacingUnit));
+
+  @media (--viewportMedium) {
+    padding: calc(4 * var(--spacingUnit));
+  }
+
+  @media (--viewportLarge) {
+    padding: calc(7 * var(--spacingUnit));
+  }
+}
+
+.cardCol.rightCol {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+  }
+}
+
+.cardPreTitle {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGrey2);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.cardTitle {
+  @apply --H5FontStyles;
+  color: var(--matterColorGrey3);
+  margin-bottom: 20px;
+}
+
+.cardSubTitle {
+  flex: 1;
+  @apply --H6FontStyles;
+  color: var(--matterColorGreyDark);
+}
+
+.cardBottomDetails {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGrey2);
+}
+
+.cardDescription {
+  @apply --BodyFontStyles;
+  color: var(--matterColorGreyDark);
+  display: -webkit-box;
+  -webkit-line-clamp: 9;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

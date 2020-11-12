@@ -1,0 +1,229 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+}
+
+.container {
+  padding-top: calc(5 * var(--spacingUnitDesktop)) !important;
+  padding-bottom: calc(5 * var(--spacingUnitDesktop)) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+    margin-left: calc(-2 * var(--spacingUnit));
+    margin-right: calc(-2 * var(--spacingUnit));
+  }
+}
+
+.h4 {
+  @apply --H4FontStyles;
+  flex-basis: 100%;
+  text-align: left;
+  color: var(--very-dark-grayish-orange);
+  margin-top: 0;
+  margin-bottom: calc(4 * var(--spacingUnit));
+  padding: 0 calc(1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    flex-basis: calc(100% - 8.33333%);
+    margin-left: 8.33333%;
+    padding: 0 calc(2 * var(--spacingUnit));
+  }
+}
+
+.item {
+  display: flex;
+  flex: 1;
+  padding: calc(2 * var(--spacingUnitDesktop)) 0;
+  flex-direction: column;
+
+  @media (--viewportMedium) {
+    padding: calc(2 * var(--spacingUnitDesktop)) calc(1 * var(--spacingUnitDesktop));
+  }
+
+  @media (--viewportLarge) {
+    padding: calc(2 * var(--spacingUnit));
+  }
+}
+
+.bgImage {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 270px;
+  margin: 0 calc(-2 * var(--spacingUnitDesktop));
+
+  @media (--viewportMedium) {
+    margin: 0;
+    height: 345px;
+  }
+
+  @media (--viewportLarge) {
+    height: 430px;
+    margin-right: 4.16666%;
+  }
+}
+
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background-color: var(--light-grayish-orange);
+  width: 100%;
+  margin-top: -15%;
+  padding: calc(2 * var(--spacingUnit)) 0;
+
+  @media (--viewportMedium) {
+    padding: calc(2 * var(--spacingUnit)) 0;
+    margin-left: 8.33333%;
+    width: 83.33333%;
+  }
+
+  @media (--viewportLarge) {
+    margin-top: -20%;
+    margin-left: 8.33333%;
+    width: 91.66666%;
+    padding: calc(3 * var(--spacingUnit)) 0;
+  }
+
+  @media (--viewportLargeWithPaddings) {
+    width: 91.66666%;
+    align-items: flex-start;
+    justify-content: stretch;
+  }
+}
+
+.cardHeader {
+  margin: calc(1 * var(--spacingUnitDesktop));
+  width: 112px;
+  height: 112px;
+
+  @media (--viewportMedium) {
+    width: 224px;
+    height: 224px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0;
+    width: 100%;
+    height: auto;
+    flex: 1;
+    flex-basis: 315px;
+  }
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: calc(2 * var(--spacingUnit)) calc(4 * var(--spacingUnit));
+
+  @media (--viewportMedium) {
+    padding: calc(2 * var(--spacingUnit)) calc(4 * var(--spacingUnit));
+  }
+
+  @media (--viewportLarge) {
+    padding: calc(3 * var(--spacingUnit)) calc(7 * var(--spacingUnit));
+  }
+}
+
+.cardPreTitle {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGrey2);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.cardTitle {
+  @apply --H5FontStyles;
+  color: var(--matterColorGrey3);
+  margin-bottom: 20px;
+}
+
+.cardDescription {
+  display: none;
+  @apply --BodyFontStyles;
+  color: var(--matterColorGreyDark);
+
+  @media (--viewportMedium) {
+    display: block;
+  }
+}
+
+.cardDescription > p {
+  @apply --BodyFontStyles;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.cardActions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: calc(2 * var(--spacingUnit)) calc(2 * var(--spacingUnit));
+  padding-top: 0;
+
+  @media (--viewportMedium) {
+    padding: calc(2 * var(--spacingUnit)) calc(2 * var(--spacingUnit));
+    padding-top: 0;
+  }
+
+  @media (--viewportLarge) {
+    padding: calc(3 * var(--spacingUnit)) calc(5 * var(--spacingUnit));
+    padding-top: 0;
+  }
+}
+
+.textLink {
+  @apply --marketplaceLinkGreen;
+  margin: 0 calc(2 * var(--spacingUnit));
+}
+
+.primaryBtn {
+  flex: 1;
+  @apply --marketplaceButtonStylesPrimary;
+  padding: calc(2 * var(--spacingUnit)) calc(2 * var(--spacingUnitDesktop));
+  width: auto;
+  margin: calc(4 * var(--spacingUnit)) 0;
+  min-height: auto;
+  align-self: stretch;
+
+  @media (--viewportMedium) {
+    margin: calc(4 * var(--spacingUnit)) calc(1 * var(--spacingUnitDesktop));
+    width: 40%;
+    max-width: 40%;
+    align-self: center;
+  }
+
+  @media (--viewportLarge) {
+    margin: calc(4 * var(--spacingUnit)) auto;
+  }
+}

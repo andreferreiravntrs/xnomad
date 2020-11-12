@@ -1,0 +1,142 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+}
+
+.container {
+  padding-top: calc(5 * var(--spacingUnitDesktop)) !important;
+  padding-bottom: calc(5 * var(--spacingUnitDesktop)) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: calc(-1 * var(--spacingUnitDesktop));
+  margin-right: calc(-1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    margin-left: calc(-2 * var(--spacingUnit));
+    margin-right: calc(-2 * var(--spacingUnit));
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+}
+
+.h4 {
+  @apply --H4FontStyles;
+  flex-basis: 100%;
+  text-align: left;
+  color: var(--very-dark-grayish-orange);
+  margin-top: 0;
+  margin-bottom: calc(4 * var(--spacingUnit));
+  padding: 0 calc(1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    flex-basis: calc(100% - 8.33333%);
+    margin-left: 8.33333%;
+    padding: 0 calc(2 * var(--spacingUnit));
+  }
+}
+
+.item {
+  flex: 1;
+  padding: calc(1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    padding: calc(2 * var(--spacingUnit));
+  }
+}
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: var(--light-grayish-orange);
+  cursor: pointer;
+
+  @media (--viewportLarge) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: stretch;
+  }
+}
+
+.cardHeader {
+  margin: calc(1 * var(--spacingUnitDesktop));
+  width: 112px;
+  height: 112px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  @media (--viewportMedium) {
+    width: 224px;
+    height: 224px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0;
+    width: 100%;
+    height: 315px;
+  }
+}
+
+.cardContent {
+  flex: 3;
+  width: 100%;
+  padding: calc(2 * var(--spacingUnitDesktop)) calc(1 * var(--spacingUnitDesktop));
+
+  @media (--viewportLarge) {
+    flex: 1;
+    padding: calc(7 * var(--spacingUnit));
+  }
+}
+
+.cardTitle {
+  @apply --H5FontStyles;
+  color: var(--matterColorGreyDark);
+  margin-bottom: 10px;
+}
+
+.cardDescription {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGreyDark);
+  display: none;
+  margin-bottom: 10px;
+
+  @media (--viewportLarge) {
+    display: block;
+  }
+}
+
+.cardDescription > p {
+  @apply --BodyFontStyles;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.cardBottomDetails {
+  @apply --BodySmallFontStyles;
+  color: var(--matterColorGrey2);
+}

@@ -1,0 +1,140 @@
+@import '../../marketplace.css';
+
+.title {
+  @apply --marketplaceH3FontStyles;
+  position: relative;
+  top: -210px;
+  border-top: 1px solid var(--matterColorNegative);
+  padding-top: 24px;
+
+  @media (--viewportXLarge) {
+    top: -260px;
+  }
+}
+
+.sectionRelated {
+  background-color: var(--backgroundColorLight);
+  height: 100%;
+  width: 100%;
+  min-height: 300px;
+}
+
+.relatedListingsContainer {
+  margin: 225px auto 0;
+  padding: 0 24px 24px;
+
+  @media (--viewportMedium) {
+    max-width: 1056px;
+  }
+
+  @media (--viewportLarge) {
+    max-width: 1383px;
+    padding: 0 36px 24px;
+    margin: 225px auto 117px;
+  }
+
+  @media (--viewportXLarge) {
+    max-width: 1500px;
+    padding: 0 0 24px;
+    margin-top: 300px;
+  }
+}
+
+.relatedListings {
+  margin-top: -200px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (--viewportXLarge) {
+    margin-top: -250px;
+  }
+}
+
+.cardWrapper {
+  position: relative;
+  width: 100%;
+  transition: var(--transitionStyleButton);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: var(--boxShadowSectionLocationHover);
+    text-decoration: none;
+  }
+}
+
+.relatedListing {
+  background-color: var(--matterColorLight);
+  color: var(--matterColorDark);
+  height: 100%;
+}
+
+.relatedListingImageSection {
+  width: 100%;
+  padding-top: 100%;
+  background: black;
+  position: relative;
+}
+
+.relatedListingImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+}
+
+.relatedListingBottomSection {
+  text-align: center;
+  padding: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.relatedListingArea {
+  font-size: 11px;
+  margin: 0;
+  height: 22px;
+}
+
+.relatedListingName {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 18px;
+  height: 45px;
+  font-weight: bold;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.relatedListingPrice {
+  display: inline;
+  color: var(--successColor);
+  margin: 0 0 0 0;
+  font-size: 16px;
+  font-weight: var(--fontWeightBold);
+}
+
+.relatedListingCurrency {
+  display: inline;
+  font-size: 16px;
+}
+
+.additionalInfo {
+  @apply --marketplaceTinyFontStyles;
+  color: var(--matterColor);
+
+  & b {
+    padding: 0 4px;
+  }
+}

@@ -1,0 +1,467 @@
+/* Fonts */
+/* These are imported into marketplace.css */
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+
+  --fontFamilyFira: 'FiraSans', sans-serif;
+  --fontFamilyCharter: 'Charter', serif;
+
+  --fontWeightRegular: 400;
+  --fontWeightMedium: 500;
+  --fontWeightSemiBold: 600;
+  --fontWeightBold: 700;
+
+  /* ================ Default font ================ */
+
+  --marketplaceDefaultFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.1px;
+    /* No margins for default font */
+
+    @media (--viewportMedium) {
+      font-size: 20px;
+      line-height: 24px;
+    }
+  }
+
+  /* ================ Body font ================ */
+
+  --marketplaceBodyFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.1px;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    @media (--viewportMedium) {
+      font-size: 20px;
+      line-height: 32px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
+
+  /* ================ Hero title ================ */
+
+  --marketplaceHeroTitleFontStyles: {
+    font-family: Charter;
+    font-weight: var(--fontWeightBold);
+    font-style: normal;
+    font-size: 40px;
+    line-height: 46px;
+    text-align: center;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 25px;
+    margin-bottom: 0;
+    max-width: 800px;
+
+    @media (--viewportMedium) {
+      font-size: 72px;
+      line-height: 83px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 25px;
+      margin-bottom: 0;
+    }
+  }
+
+  /* ================ Modal title ================ */
+
+  --marketplaceModalTitleStyles {
+    font-weight: var(--fontWeightSemiBold);
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.5px;
+    margin: 0;
+    font-weight: var(--fontWeightBold);
+
+    @media (--viewportMedium) {
+      font-weight: var(--fontWeightSemiBold);
+      line-height: 40px;
+      letter-spacing: -0.9px;
+      margin: 0;
+    }
+  }
+
+  /* ================ DEPRECATED H1, H2, H3, H4, H5 & H6 ================ */
+
+  --marketplaceH1FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-weight: var(--fontWeightBold);
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -1px;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 18px;
+    margin-bottom: 18px;
+    color: var(--matterColorDark);
+
+    @media (--viewportMedium) {
+      font-size: 35px;
+      font-weight: var(--fontWeightSemiBold);
+      line-height: 56px;
+      letter-spacing: -2px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+  }
+
+  --marketplaceH2FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-weight: var(--fontWeightSemiBold);
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: -0.3px;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 21px;
+    margin-bottom: 17px;
+
+    @media (--viewportMedium) {
+      line-height: 32px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 21px;
+      margin-bottom: 19px;
+    }
+  }
+
+  --marketplaceH3FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-weight: var(--fontWeightSemiBold);
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.2px;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 16px;
+    margin-bottom: 14px;
+
+    @media (--viewportMedium) {
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
+
+  --marketplaceH4FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-weight: var(--fontWeightMedium);
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    @media (--viewportMedium) {
+      font-weight: var(--fontWeightMedium);
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 17px;
+      margin-bottom: 15px;
+    }
+  }
+
+  --marketplaceH5FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-weight: var(--fontWeightRegular);
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 10px;
+    margin-bottom: 8px;
+
+    @media (--viewportMedium) {
+      line-height: 24px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 10px;
+      margin-bottom: 14px;
+    }
+  }
+
+  --marketplaceH6FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-weight: var(--fontWeightBold);
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 10px;
+    margin-bottom: 8px;
+
+    @media (--viewportMedium) {
+      line-height: 16px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+  }
+
+  /* ================ NEW H1, H2, H3, H4, H5 & H6 ================ */
+
+  --H1FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: var(--fontWeightBold);
+    line-height: 46px;
+    letter-spacing: 0px;
+    text-align: center;
+    margin: 0;
+
+    @media (--viewportMedium) {
+      font-size: 72px;
+      line-height: 83px;
+    }
+  }
+
+  --H3FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: var(--fontWeightBold);
+    line-height: 38px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin: 0;
+
+    @media (--viewportMedium) {
+      font-size: 45px;
+      line-height: 54px;
+    }
+  }
+
+  --H4FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-size: 28px;
+    font-style: normal;
+    font-weight: var(--fontWeightBold);
+    line-height: 33px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin: 0;
+
+    @media (--viewportMedium) {
+      font-size: 32px;
+      line-height: 38px;
+    }
+  }
+
+  --H5FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: var(--fontWeightBold);
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin: 0;
+
+    @media (--viewportMedium) {
+      font-size: 24px;
+      line-height: 28px;
+    }
+  }
+
+  --H6FontStyles: {
+    font-family: var(--fontFamilyCharter);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--fontWeightBold);
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin: 0;
+    text-transform: initial;
+
+    @media (--viewportMedium) {
+      font-size: 18px;
+      line-height: 22px;
+    }
+  }
+
+  /* ================ Body fonts ================ */
+
+  --BodyFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: var(--fontWeightRegular);
+    line-height: 27px;
+    letter-spacing: 0px;
+  }
+
+  --BodySmallFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--fontWeightRegular);
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  /* ================ Other fonts ================ */
+
+  --marketplaceNavLinkFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightMedium);
+    font-size: 16px;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  --marketplaceSubNavLinkFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  --marketplaceMobileMenuNavLinkFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightMedium);
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: -0.3px;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 21px;
+    margin-bottom: 17px;
+
+    @media (--viewportMedium) {
+      line-height: 32px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 21px;
+      margin-bottom: 19px;
+    }
+  }
+
+  --marketplaceTextButtonFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightMedium);
+    font-style: normal;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  --marketplaceTinyFontStyles: {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.1px;
+    /* margin-top + n * line-height + margin-bottom => x * 6px */
+    margin-top: 9.5px;
+    margin-bottom: 8.5px;
+
+    @media (--viewportMedium) {
+      line-height: 16px;
+      /* margin-top + n * line-height + margin-bottom => x * 8px */
+      margin-top: 10.5px;
+      margin-bottom: 13.5px;
+    }
+  }
+
+  --marketplaceMessageFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  --marketplaceMessageDateFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.1px;
+
+    @media (--viewportMedium) {
+      font-weight: var(--fontWeightMedium);
+      font-size: 13px;
+      line-height: 24px;
+    }
+  }
+
+  --marketplaceTxTransitionFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightMedium);
+    font-size: 16px;
+    line-height: 18px;
+
+    @media (--viewportMedium) {
+      font-size: 20px;
+      line-height: 32px;
+    }
+  }
+
+  --marketplaceSearchFilterLabelFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 13px;
+    line-height: 18px;
+    font-style: normal;
+    text-align: left;
+
+    @media (--viewportMedium) {
+      font-size: 18px;
+      line-height: 27px;
+    }
+  }
+
+  --marketplaceSearchFilterSublabelFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightMedium);
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  --marketplaceListingAttributeFontStyles {
+    font-family: var(--fontFamilyFira);
+    font-weight: var(--fontWeightRegular);
+    font-size: 18px;
+    line-height: 32px;
+  }
+
+  /* ================ Tabbed navigation font styles ================ */
+
+  --marketplaceTabNavFontStyles {
+    font-weight: var(--fontWeightMedium);
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+
+    @media (--viewportLarge) {
+      font-weight: var(--fontWeightSemiBold);
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+
+  --marketplaceTabNavHorizontalFontStyles {
+    font-weight: var(--fontWeightMedium);
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+  }
+}
