@@ -10,7 +10,7 @@
  * component for them that can be used in the `BookingBreakdown` component.
  */
 import React from 'react';
-import { intlShape } from 'react-intl';
+import { intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { humanizeLineItemCode } from '../../util/data';
 import { LINE_ITEMS, propTypes } from '../../util/types';
@@ -18,22 +18,32 @@ import { LINE_ITEMS, propTypes } from '../../util/types';
 import css from './BookingBreakdown.css';
 
 const LineItemUnknownItemsMaybe = props => {
-  const { transaction, intl } = props;
+  const { transaction, isProvider, intl } = props;
 
   // resolve unknown non-reversal line items
-  const items = transaction.attributes.lineItems.filter(
+  const allItems = transaction.attributes.lineItems.filter(
     item => LINE_ITEMS.indexOf(item.code) === -1 && !item.reversal
   );
+
+  const items = isProvider
+    ? allItems.filter(item => item.includeFor.includes('provider'))
+    : allItems.filter(item => item.includeFor.includes('customer'));
 
   return items.length > 0 ? (
     <React.Fragment>
       {items.map((item, i) => {
-        const label = humanizeLineItemCode(item.code);
+        const quantity = item.quantity;
+
+        const label =
+          quantity && quantity > 1
+            ? `${humanizeLineItemCode(item.code)} x ${quantity}`
+            : humanizeLineItemCode(item.code);
+
         const formattedTotal = formatMoney(intl, item.lineTotal);
         return (
           <div key={`${i}-item.code`} className={css.lineItem}>
-            <label className={css.itemLabel}>{label}</label>
-            <span className={css.itemValue}>{formattedTotal} {item.lineTotal.currency}</span>
+            <span className={css.itemLabel}>{label}</span>
+            <span className={css.itemValue}>{formattedTotal}</span>
           </div>
         );
       })}

@@ -1,6 +1,6 @@
 import React from 'react';
 import css from './ContactPost.css';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from '../../util/reactIntl';
 
 const ContactPostComponent = props => {
   const { image, intlMessageId, formId, handleOpenModal, intl } = props;

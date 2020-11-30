@@ -1,10 +1,11 @@
 import React from 'react';
 import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
-import { ListingLink } from '../../components';
+import { findOptionsForSelectFilter } from '../../util/search';
 import { LISTING_STATE_DRAFT } from '../../util/types';
+import { ListingLink } from '../../components';
 import { EditListingDescriptionForm } from '../../forms';
 import config from '../../config';
 
@@ -15,6 +16,8 @@ const EditListingDescriptionPanel = props => {
     className,
     rootClassName,
     listing,
+    disabled,
+    ready,
     onSubmit,
     onChange,
     submitButtonText,
@@ -34,9 +37,10 @@ const EditListingDescriptionPanel = props => {
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-      <FormattedMessage id="EditListingDescriptionPanel.createListingTitle" />
-    );
+    <FormattedMessage id="EditListingDescriptionPanel.createListingTitle" />
+  );
 
+  const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters);
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
@@ -55,10 +59,12 @@ const EditListingDescriptionPanel = props => {
           onSubmit(updateValues);
         }}
         onChange={onChange}
+        disabled={disabled}
+        ready={ready}
         updated={panelUpdated}
         updateInProgress={updateInProgress}
         fetchErrors={errors}
-        categories={config.custom.categories}
+        categories={categoryOptions}
       />
     </div>
   );
@@ -78,6 +84,8 @@ EditListingDescriptionPanel.propTypes = {
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
+  disabled: bool.isRequired,
+  ready: bool.isRequired,
   onSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,

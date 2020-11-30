@@ -1,6 +1,6 @@
 import React from 'react';
 import { string } from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import classNames from 'classnames';
 import css from './SectionAnalytics.css';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { object, string, bool, number, func, shape } from 'prop-types';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import omit from 'lodash/omit';
@@ -230,19 +230,6 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
-  // const areaFilterElement = areaFilter ? (
-
-  //   <AreaFilter
-  //     id="SearchFilters.areaFilter"
-  //     urlParam={areaFilter.paramName}
-  //     onSubmit={handleArea}
-  //     showAsPopup
-  //     {...areaFilter.config}
-  //     initialValues={initialAreaRange}
-  //     contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
-  //   />
-  // ) : null;
-
   const areaFilterElement = areaFilter ? (
     <AreaFilter
       id="SearchFilters.areaFilter"
@@ -259,7 +246,7 @@ const SearchFiltersComponent = props => {
     dateRangeFilter && dateRangeFilter.config.active ? (
       <BookingDateRangeFilter
         id="SearchFilters.dateRangeFilter"
-        urlParam={dateRangeFilter.paramName}
+        queryParamNames={[dateRangeFilter.paramName]}
         onSubmit={handleDateRange}
         showAsPopup
         contentPlacementOffset={FILTER_DROPDOWN_OFFSET}

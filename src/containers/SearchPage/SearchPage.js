@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { array, bool, func, number, oneOf, object, shape, string } from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from '../../util/reactIntl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
@@ -45,53 +45,9 @@ export class SearchPageComponent extends Component {
 
     this.searchMapListingsInProgress = false;
 
-    this.filters = this.filters.bind(this);
     this.onMapMoveEnd = debounce(this.onMapMoveEnd.bind(this), SEARCH_WITH_MAP_DEBOUNCE);
     this.onOpenMobileModal = this.onOpenMobileModal.bind(this);
     this.onCloseMobileModal = this.onCloseMobileModal.bind(this);
-  }
-
-  filters() {
-    const {
-      categories,
-      amenities,
-      priceFilterConfig,
-      areaFilterConfig,
-      dateRangeFilterConfig,
-      keywordFilterConfig,
-    } = this.props;
-
-    // Note: "category" and "amenities" filters are not actually filtering anything by default.
-    // Currently, if you want to use them, we need to manually configure them to be available
-    // for search queries. Read more from extended data document:
-    // https://www.sharetribe.com/docs/references/extended-data/#data-schema
-
-    return {
-      categoryFilter: {
-        paramName: 'pub_categories',
-        options: categories,
-      },
-      amenitiesFilter: {
-        paramName: 'pub_amenities',
-        options: amenities,
-      },
-      areaFilter: {
-        paramName: 'pub_area',
-        config: areaFilterConfig,
-      },
-      priceFilter: {
-        paramName: 'price',
-        config: priceFilterConfig,
-      },
-      dateRangeFilter: {
-        paramName: 'dates',
-        config: dateRangeFilterConfig,
-      },
-      keywordFilter: {
-        paramName: 'keywords',
-        config: keywordFilterConfig,
-      },
-    };
   }
 
   // Callback to determine if new search is needed
@@ -112,7 +68,7 @@ export class SearchPageComponent extends Component {
     // we start to react to "mapmoveend" events by generating new searches
     // (i.e. 'moveend' event in Mapbox and 'bounds_changed' in Google Maps)
     if (viewportBoundsChanged && isSearchPage) {
-      const { history, location } = this.props;
+      const { history, location, filterConfig } = this.props;
 
       // parse query parameters, including a custom attribute named category
       const { address, bounds, mapSearch, ...rest } = parse(location.search, {
@@ -128,7 +84,7 @@ export class SearchPageComponent extends Component {
         ...originMaybe,
         bounds: viewportBounds,
         mapSearch: true,
-        ...validFilterParams(rest, this.filters()),
+        ...validFilterParams(rest, filterConfig),
       };
 
       history.push(createResourceLocatorString('SearchPage', routes, {}, searchParams));
@@ -151,6 +107,9 @@ export class SearchPageComponent extends Component {
     const {
       intl,
       listings,
+      filterConfig,
+      sortConfig,
+      history,
       location,
       mapListings,
       onManageDisableScrolling,
@@ -168,18 +127,18 @@ export class SearchPageComponent extends Component {
       latlngBounds: ['bounds'],
     });
 
-    const filters = this.filters();
-
     // urlQueryParams doesn't contain page specific url params
     // like mapSearch, page or origin (origin depends on config.sortSearchByDistance)
-    const urlQueryParams = pickSearchParamsOnly(searchInURL, filters);
+    const urlQueryParams = pickSearchParamsOnly(searchInURL, filterConfig, sortConfig);
 
     // Page transition might initially use values from previous search
     const urlQueryString = stringify(urlQueryParams);
-    const paramsQueryString = stringify(pickSearchParamsOnly(searchParams, filters));
+    const paramsQueryString = stringify(
+      pickSearchParamsOnly(searchParams, filterConfig, sortConfig)
+    );
     const searchParamsAreInSync = urlQueryString === paramsQueryString;
 
-    const validQueryParams = validURLParamsForExtendedData(searchInURL, filters);
+    const validQueryParams = validURLParamsForExtendedData(searchInURL, filterConfig);
 
     const isWindowDefined = typeof window !== 'undefined';
     const isMobileLayout = isWindowDefined && window.innerWidth < MODAL_BREAKPOINT;
@@ -230,14 +189,7 @@ export class SearchPageComponent extends Component {
             pagination={pagination}
             searchParamsForPagination={parse(location.search)}
             showAsModalMaxWidth={MODAL_BREAKPOINT}
-            primaryFilters={{
-              categoryFilter: filters.categoryFilter,
-              amenitiesFilter: filters.amenitiesFilter,
-              areaFilter: filters.areaFilter,
-              priceFilter: filters.priceFilter,
-              dateRangeFilter: filters.dateRangeFilter,
-              keywordFilter: filters.keywordFilter,
-            }}
+            history={history}
           />
           <ModalInMobile
             className={css.mapPanel}
@@ -280,12 +232,8 @@ SearchPageComponent.defaultProps = {
   searchListingsError: null,
   searchParams: {},
   tab: 'listings',
-  categories: config.custom.categories,
-  amenities: config.custom.amenities,
-  priceFilterConfig: config.custom.priceFilterConfig,
-  areaFilterConfig: config.custom.areaFilterConfig,
-  dateRangeFilterConfig: config.custom.dateRangeFilterConfig,
-  keywordFilterConfig: config.custom.keywordFilterConfig,
+  filterConfig: config.custom.filters,
+  sortConfig: config.custom.sortConfig,
   activeListingId: null,
 };
 
@@ -301,19 +249,8 @@ SearchPageComponent.propTypes = {
   searchListingsError: propTypes.error,
   searchParams: object,
   tab: oneOf(['filters', 'listings', 'map']).isRequired,
-  categories: array,
-  amenities: array,
-  priceFilterConfig: shape({
-    min: number.isRequired,
-    max: number.isRequired,
-    step: number.isRequired,
-  }),
-  areaFilterConfig: shape({
-    min: number.isRequired,
-    max: number.isRequired,
-    step: number.isRequired,
-  }),
-  dateRangeFilterConfig: shape({ active: bool.isRequired }),
+  filterConfig: propTypes.filterConfig,
+  sortConfig: propTypes.sortConfig,
 
   // from withRouter
   history: shape({

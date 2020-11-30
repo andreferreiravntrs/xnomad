@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
+import { intlShape, injectIntl } from '../../util/reactIntl';
 import { Field } from 'react-final-form';
 import classNames from 'classnames';
 import Decimal from 'decimal.js';
@@ -125,7 +125,7 @@ class CurrencyInputComponent extends Component {
         onBlur(price);
       }
       return {
-        value: prevState.unformattedValue,
+        value: prevState.formattedValue,
       };
     });
   }

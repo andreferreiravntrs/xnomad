@@ -6,7 +6,7 @@
 
   background-color: var(--matterColorLight);
   border-top: 1px solid var(--matterColorNegative);
-  box-shadow: var(--boxShadowPopupFilters);
+  box-shadow: var(--boxShadowPopup);
   border-radius: 0 0 2px 2px;
   transition: var(--transitionStyleButton);
 }

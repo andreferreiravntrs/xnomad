@@ -24,22 +24,6 @@ const sanitizeText = str =>
     ? str.replace(ESCAPE_TEXT_REGEXP, ch => ESCAPE_TEXT_REPLACEMENTS[ch])
     : '';
 
-// Sanitize complex objects.
-// Iterates through children and sanitizes any text within.
-const sanitizeObject = obj => {
-  if (obj == null) {
-    return obj;
-  }
-  Object.keys(obj).forEach(o => {
-    if (obj[o] && typeof obj[o] === 'object') {
-      sanitizeObject(obj[o]);
-      return;
-    }
-    obj[o] = sanitizeText(obj[o]);
-  });
-  return obj;
-};
-
 /**
  * Sanitize user entity.
  * If you add public data, you should probably sanitize it here.
@@ -84,12 +68,8 @@ export const sanitizeListing = entity => {
   const { title, description, publicData, ...restAttributes } = attributes || {};
 
   const sanitizeLocation = location => {
-    const { address, building, addressComponents } = location || {};
-    return {
-      address: sanitizeText(address),
-      building: sanitizeText(building),
-      addressComponents: sanitizeObject(addressComponents),
-    };
+    const { address, building } = location || {};
+    return { address: sanitizeText(address), building: sanitizeText(building) };
   };
 
   const sanitizePublicData = publicData => {

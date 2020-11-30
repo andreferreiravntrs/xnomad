@@ -1,9 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { intlShape, injectIntl } from 'react-intl';
-import { arrayOf, bool, func, node, oneOfType, shape, string } from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
+import { arrayOf, array, bool, func, node, oneOfType, shape, string } from 'prop-types';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
 import { propTypes, LISTING_STATE_CLOSED, LINE_ITEM_NIGHT, LINE_ITEM_DAY } from '../../util/types';
@@ -54,18 +53,25 @@ const BookingPanel = props => {
   const {
     rootClassName,
     className,
+    titleClassName,
     listing,
     isOwnListing,
     unitType,
     onSubmit,
+    title,
     subTitle,
+    authorDisplayName,
     onManageDisableScrolling,
     timeSlots,
     fetchTimeSlotsError,
     history,
     location,
     intl,
-    onContactUser,
+    onFetchTransactionLineItems,
+    lineItems,
+    fetchLineItemsInProgress,
+    fetchLineItemsError,
+    onContactUser
   } = props;
 
   const buildDynamicPricing = (price, dynamicPricing) => {
@@ -99,15 +105,15 @@ const BookingPanel = props => {
   const unitTranslationKey = isNightly
     ? 'BookingPanel.perNight'
     : isDaily
-      ? 'BookingPanel.perDay'
-      : 'BookingPanel.perUnit';
+    ? 'BookingPanel.perDay'
+    : 'BookingPanel.perUnit';
 
   const classes = classNames(rootClassName || css.root, className);
+  const titleClasses = classNames(titleClassName || css.bookingTitle);
 
   const handleContactUserClick = () => {
     onContactUser(user);
   };
-
   return (
     <div className={classes}>
       <div className={css.bookinPanelWrapper}>
@@ -131,19 +137,25 @@ const BookingPanel = props => {
           {subTitleText ? <div className={css.bookingHelp}>{subTitleText}</div> : null}
 
           {showBookingDatesForm ? (
-            <>
+            <> 
               <BookingDatesForm
                 className={css.bookingForm}
+                formId="BookingPanel"
                 submitButtonWrapperClassName={css.bookingDatesSubmitButtonWrapper}
                 startDatePlaceholder={intl.formatMessage({ id: 'BookingPanel.popInDate' })}
                 endDatePlaceholder={intl.formatMessage({ id: 'BookingPanel.popOutDate' })}
                 unitType={unitType}
                 onSubmit={onSubmit}
                 price={price}
+                listingId={listing.id}
                 dynamicPricing={dynamicPricing}
                 isOwnListing={isOwnListing}
                 timeSlots={timeSlots}
                 fetchTimeSlotsError={fetchTimeSlotsError}
+                onFetchTransactionLineItems={onFetchTransactionLineItems}
+                lineItems={lineItems}
+                fetchLineItemsInProgress={fetchLineItemsInProgress}
+                fetchLineItemsError={fetchLineItemsError}
                 minDays={minDays}
               />
               <Button rootClassName={css.contactButtonDesktop} onClick={handleContactUserClick}>
@@ -186,10 +198,8 @@ const BookingPanel = props => {
               </div>
             )}
         </div>
-
-
       </div>
-
+    
       <Button rootClassName={css.contactButtonMobile} onClick={handleContactUserClick}>
         <FormattedMessage id="BookingPanel.ctaContactButton" />
       </Button>
@@ -206,6 +216,8 @@ BookingPanel.defaultProps = {
   unitType: config.bookingUnitType,
   timeSlots: null,
   fetchTimeSlotsError: null,
+  lineItems: null,
+  fetchLineItemsError: null,
 };
 
 BookingPanel.propTypes = {
@@ -222,6 +234,10 @@ BookingPanel.propTypes = {
   onManageDisableScrolling: func.isRequired,
   timeSlots: arrayOf(propTypes.timeSlot),
   fetchTimeSlotsError: propTypes.error,
+  onFetchTransactionLineItems: func.isRequired,
+  lineItems: array,
+  fetchLineItemsInProgress: bool.isRequired,
+  fetchLineItemsError: propTypes.error,
 
   // from withRouter
   history: shape({

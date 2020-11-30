@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { string, object } from 'prop-types';
-import { intlShape, FormattedMessage } from 'react-intl';
+import { intlShape, FormattedMessage } from '../../util/reactIntl';
 import config from '../../config';
 import classNames from 'classnames';
 import css from './SectionHighlightedLocation.css';

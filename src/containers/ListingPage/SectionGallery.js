@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ResponsiveImage } from '../../components';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
+import { injectIntl, intlShape } from '../../util/reactIntl';
 
 import css from './ListingPage.css';
 

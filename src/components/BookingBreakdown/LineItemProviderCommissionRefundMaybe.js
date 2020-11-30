@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { propTypes, LINE_ITEM_PROVIDER_COMMISSION } from '../../util/types';
 
@@ -14,10 +14,10 @@ const LineItemProviderCommissionRefundMaybe = props => {
 
   return isProvider && refund ? (
     <div className={css.lineItem}>
-      <label className={css.itemLabel}>
+      <span className={css.itemLabel}>
         <FormattedMessage id="BookingBreakdown.refundProviderFee" />
-      </label>
-      <span className={css.itemValue}>{formatMoney(intl, refund.lineTotal)} {refund.lineTotal.currency}</span>
+      </span>
+      <span className={css.itemValue}>{formatMoney(intl, refund.lineTotal)}</span>
     </div>
   ) : null;
 };

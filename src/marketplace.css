@@ -69,9 +69,11 @@
 
   --successColor: #2ecc71;
   --successColorDark: #239954;
+  --successColorLight: #f0fff6;
   --failColor: #ff0000;
-  --failColorLight: #ffcccc;
+  --failColorLight: #fff0f0;
   --attentionColor: #ffaa00;
+  --attentionColorLight: #fff7f0;
   --bannedColorLight: var(--marketplaceColorLight);
   --bannedColorDark: var(--marketplaceColor);
 
@@ -147,7 +149,7 @@
   /* ================ Transition styles ================ */
 
   --transitionStyle: ease-in 0.2s;
-  --transitionStyleButton: all 0.1s ease-in-out;
+  --transitionStyleButton: ease-in-out 0.1s;
 
   /* ================ Topbar heights ================ */
 
@@ -679,6 +681,7 @@
   --marketplaceModalCloseIcon {
     display: inline-block;
     margin-left: 8px;
+    padding: 2px 0 4px;
     box-sizing: content-box;
   }
 

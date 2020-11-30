@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import { LINE_ITEM_UNITS, propTypes } from '../../util/types';
 
 import css from './BookingBreakdown.css';
@@ -23,9 +23,9 @@ const LineItemUnitsMaybe = props => {
 
   return (
     <div className={css.lineItem}>
-      <label className={css.itemLabel}>
+      <span className={css.itemLabel}>
         <FormattedMessage id="BookingBreakdown.quantityUnit" />
-      </label>
+      </span>
       <span className={css.itemValue}>
         <FormattedMessage id="BookingBreakdown.quantity" values={{ quantity }} />
       </span>

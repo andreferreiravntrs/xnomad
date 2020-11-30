@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { string, func, oneOfType } from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import truncate from 'lodash/truncate';
 import classNames from 'classnames';
 import { NamedLink, InlineTextButton } from '../../components';
@@ -63,7 +63,7 @@ ExpandableBio.propTypes = {
 };
 
 const UserCard = props => {
-  const { rootClassName, className, user, currentUser } = props;
+  const { rootClassName, className, user, currentUser, onContactUser } = props;
 
   const userIsCurrentUser = user && user.type === 'currentUser';
   const ensuredUser = userIsCurrentUser ? ensureCurrentUser(user) : ensureUser(user);
@@ -95,9 +95,9 @@ const UserCard = props => {
     // <span className={css.editProfileMobile}> // Taken away beacuse of style of editProfileMobile link
     //   {/* <span className={css.linkSeparator}>•</span> */}
     //   <br/>
-      <NamedLink className={css.editProfileMobile} name="ProfileSettingsPage">
-        <FormattedMessage id="ListingPage.editProfileLink" />
-      </NamedLink>
+    <NamedLink className={css.editProfileMobile} name="ProfileSettingsPage">
+      <FormattedMessage id="ListingPage.editProfileLink" />
+    </NamedLink>
     // </span>
   );
 
@@ -111,11 +111,10 @@ const UserCard = props => {
     <div className={linkClasses}>
       <NamedLink className={css.link} name="ProfilePage" params={{ id: ensuredUser.id.uuid }}>
         {/* <FormattedMessage id="UserCard.viewProfileLink"/> */}
-        <FormattedMessage id="UserCard.hostedBy" values={{ name: displayName}}/>
+        <FormattedMessage id="UserCard.hostedBy" values={{ name: displayName }} />
       </NamedLink>
-      <br/>
+      <br />
       {/* {separator} */}
-      {/* <br/> */}
       {/* {isCurrentUser ? editProfileMobile : contact} */}
       {isCurrentUser ? editProfileMobile : null}
     </div>
@@ -127,7 +126,7 @@ const UserCard = props => {
         <div className={css.info}>
           <div className={css.headingRow}>
             {/* <h3 className={css.heading}> */}
-              <FormattedMessage id="UserCard.hosted" values={{ name: displayName }} />
+            <FormattedMessage id="UserCard.hosted" values={{ name: displayName }} />
             {/* </h3> */}
           </div>
           {hasBio ? <ExpandableBio className={css.desktopBio} bio={bio} /> : null}

@@ -25,7 +25,7 @@
   line-height: unset;
   padding-left: 0;
   margin: 0;
-  border-bottom: 2px solid var(--matterColoPrimary);
+  border-bottom: 2px solid var(--attentionColor);
 
   &:hover,
   &:focus {
@@ -53,7 +53,7 @@
   padding-bottom: var(--locationAutocompleteBottomPadding);
   top: 36px;
   left: 0;
-  background-color: var(--matterColorLight);
+  background-color: var(--marketplaceColor);
   border-bottom-left-radius: var(--borderRadius);
   border-bottom-right-radius: var(--borderRadius);
   box-shadow: var(--boxShadowPopup);

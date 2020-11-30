@@ -121,3 +121,20 @@ export const CA_CAD = {
   },
   group: 'custom inputs',
 };
+
+// JP
+export const JP_JPY = {
+  component: formComponent('JP'),
+  props: {
+    formName: 'JP_JPY',
+    onChange: formState => {
+      if (formState.dirty) {
+        console.log('form values changed to:', formState.values);
+      }
+    },
+    onSubmit: values => {
+      console.log('values submitted:', values);
+    },
+  },
+  group: 'custom inputs',
+};

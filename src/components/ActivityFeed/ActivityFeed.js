@@ -1,6 +1,6 @@
 import React from 'react';
 import { string, arrayOf, bool, func, number } from 'prop-types';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import dropWhile from 'lodash/dropWhile';
 import classNames from 'classnames';
 import { Avatar, InlineTextButton, ReviewRating, UserDisplayName } from '../../components';
@@ -79,11 +79,13 @@ const Review = props => {
   return (
     <div>
       <p className={css.reviewContent}>{content}</p>
-      <ReviewRating
-        reviewStarClassName={css.reviewStar}
-        className={css.reviewStars}
-        rating={rating}
-      />
+      {rating ? (
+        <ReviewRating
+          reviewStarClassName={css.reviewStar}
+          className={css.reviewStars}
+          rating={rating}
+        />
+      ) : null}
     </div>
   );
 };
@@ -203,7 +205,9 @@ const resolveTransitionMessage = (
 };
 
 const reviewByAuthorId = (transaction, userId) => {
-  return transaction.reviews.filter(r => r.author.id.uuid === userId.uuid)[0];
+  return transaction.reviews.filter(
+    r => !r.attributes.deleted && r.author.id.uuid === userId.uuid
+  )[0];
 };
 
 const Transition = props => {
@@ -240,18 +244,23 @@ const Transition = props => {
   );
   const currentTransition = transition.transition;
 
+  const deletedReviewContent = intl.formatMessage({ id: 'ActivityFeed.deletedReviewContent' });
   let reviewComponent = null;
 
   if (transitionIsReviewed(lastTransition)) {
     if (isCustomerReview(currentTransition)) {
       const review = reviewByAuthorId(currentTransaction, customer.id);
-      reviewComponent = (
+      reviewComponent = review ? (
         <Review content={review.attributes.content} rating={review.attributes.rating} />
+      ) : (
+        <Review content={deletedReviewContent} />
       );
     } else if (isProviderReview(currentTransition)) {
       const review = reviewByAuthorId(currentTransaction, provider.id);
-      reviewComponent = (
+      reviewComponent = review ? (
         <Review content={review.attributes.content} rating={review.attributes.rating} />
+      ) : (
+        <Review content={deletedReviewContent} />
       );
     }
   }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { string } from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import {
   BookingDateRangeFilter,
@@ -8,7 +8,6 @@ import {
   LocationFilter
 } from '../../components';
 import omit from 'lodash/omit';
-import { stringifyDateToISO8601 } from '../../util/dates';
 import config from '../../config';
 import { createResourceLocatorString } from '../../util/routes';
 import routeConfiguration from '../../routeConfiguration';
@@ -16,22 +15,12 @@ import css from './SectionHero.css';
 
 const FILTER_DROPDOWN_OFFSET = -14;
 
-const SectionHero = ({ history, rootClassName, className, intl, areaFilterConfig, dateRangeFilterConfig, keywordFilterConfig }) => {
+const SectionHero = ({ history, rootClassName, className, intl }) => {
   const [areaFilter, setAreaFilter] = useState(null);
   const [dateRangeFilter, setDateRangeFilter] = useState({ dates: null });
   const [locationFilter, setLocationFilter] = useState({ id: null, place: null });
   const [urlQueryParams, setUrlQueryParams] = useState({});
-
-  const filters = {
-    areaFilter: {
-      paramName: 'pub_area',
-      config: areaFilterConfig,
-    },
-    dateRangeFilter: {
-      paramName: 'dates',
-      config: dateRangeFilterConfig,
-    }
-  };
+  const filters = config.custom.filters;
 
   const classes = classNames(rootClassName || css.root, className);
 
@@ -46,20 +35,9 @@ const SectionHero = ({ history, rootClassName, className, intl, areaFilterConfig
     setUrlQueryParams(queryParams);
   };
 
-  const handleDateRange = (urlParam, dateRange) => {
-    const hasDates = dateRange && dateRange.dates;
-    const { startDate, endDate } = hasDates ? dateRange.dates : {};
-    const daterangefilter = hasDates ? { dates: dateRange.dates } : { dates: null };
-    setDateRangeFilter(daterangefilter);
-
-    const start = startDate ? stringifyDateToISO8601(startDate) : null;
-    const end = endDate ? stringifyDateToISO8601(endDate) : null;
-
-    const queryParams =
-      start != null && end != null
-        ? { ...urlQueryParams, [urlParam]: `${start},${end}` }
-        : omit(urlQueryParams, urlParam);
-    setUrlQueryParams(queryParams);
+  const handleDateRange = (datesRange) => {
+    setDateRangeFilter(datesRange);
+    setUrlQueryParams(datesRange);
   };
 
   const handleLocation = (urlParam, place, location) => {
@@ -85,30 +63,31 @@ const SectionHero = ({ history, rootClassName, className, intl, areaFilterConfig
     id: 'SearchFilters.locationLabel',
   });
 
-  const areaFilterElement = filters.areaFilter ? (
+  const areaFiltersConfig = filters.find(f => f.id === "area");
+  const areaFilterElement = areaFiltersConfig ? (
     <AreaFilter
       id="SearchFilters.areaFilter"
       onSubmit={handleArea}
-      urlParam={filters.areaFilter.paramName}
+      queryParamNames={areaFiltersConfig.queryParamNames}
       showAsPopup
-      {...filters.areaFilter.config}
+      {...areaFiltersConfig.config}
       initialValues={areaFilter}
       contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
     />
   ) : null;
 
-  const dateRangeFilterElement =
-    filters.dateRangeFilter && filters.dateRangeFilter.config.active ? (
-      <BookingDateRangeFilter
-        id="SearchFilters.dateRangeFilter"
-        urlParam={filters.dateRangeFilter.paramName}
-        onSubmit={handleDateRange}
-        {...filters.dateRangeFilter.config}
-        showAsPopup
-        contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
-        initialValues={dateRangeFilter}
-      />
-    ) : null;
+  const dateFiltersConfig = filters.find(f => f.id === "dates");
+  const dateRangeFilterElement = dateFiltersConfig ? (
+    <BookingDateRangeFilter
+      id="SearchFilters.dateRangeFilter"
+      queryParamNames={dateFiltersConfig.queryParamNames}
+      onSubmit={handleDateRange}
+      {...dateFiltersConfig.config}
+      initialValues={dateRangeFilter}
+      showAsPopup
+      contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
+    />
+  ) : null;
 
   const locationFilterElement = (
     <LocationFilter
@@ -148,9 +127,6 @@ const SectionHero = ({ history, rootClassName, className, intl, areaFilterConfig
 SectionHero.defaultProps = {
   rootClassName: null,
   className: null,
-  areaFilterConfig: config.custom.areaFilterConfig,
-  dateRangeFilterConfig: config.custom.dateRangeFilterConfig,
-  keywordFilterConfig: config.custom.keywordFilterConfig,
 };
 
 SectionHero.propTypes = {

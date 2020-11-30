@@ -2,8 +2,7 @@ import React from 'react';
 import { arrayOf, bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators, validNumber } from '../../util/validators';
@@ -16,12 +15,12 @@ const TITLE_MAX_LENGTH = 60;
 const EditListingDescriptionFormComponent = props => (
   <FinalForm
     {...props}
-    mutators={{ ...arrayMutators }}
-    render={fieldRenderProps => {
+    render={formRenderProps => {
       const {
         categories,
         className,
         disabled,
+        ready,
         handleSubmit,
         intl,
         invalid,
@@ -30,7 +29,7 @@ const EditListingDescriptionFormComponent = props => (
         updated,
         updateInProgress,
         fetchErrors,
-      } = fieldRenderProps;
+      } = formRenderProps;
 
       const titleMessage = intl.formatMessage({ id: 'EditListingDescriptionForm.title' });
       const titlePlaceholderMessage = intl.formatMessage({
@@ -91,7 +90,7 @@ const EditListingDescriptionFormComponent = props => (
       ) : null;
 
       const classes = classNames(css.root, className);
-      const submitReady = updated && pristine;
+      const submitReady = (updated && pristine) || ready;
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
@@ -160,6 +159,8 @@ EditListingDescriptionFormComponent.propTypes = {
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,
+  disabled: bool.isRequired,
+  ready: bool.isRequired,
   updated: bool.isRequired,
   updateInProgress: bool.isRequired,
   fetchErrors: shape({

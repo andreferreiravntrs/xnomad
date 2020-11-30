@@ -1,6 +1,6 @@
 import React from 'react';
 import { string, oneOfType, bool } from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import {
@@ -19,6 +19,12 @@ const AVATAR_SIZES_MEDIUM = '60px';
 const AVATAR_SIZES_LARGE = '96px';
 
 const AVATAR_IMAGE_VARIANTS = [
+  // 40x40
+  'square-xsmall',
+
+  // 80x80
+  'square-xsmall2x',
+
   // 240x240
   'square-small',
 

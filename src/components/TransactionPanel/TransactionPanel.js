@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { array, arrayOf, bool, func, number, string } from 'prop-types';
-import { injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
 import {
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
@@ -22,7 +22,13 @@ import {
 } from '../../util/data';
 import { isMobileSafari } from '../../util/userAgent';
 import { formatMoney } from '../../util/currency';
-import { AvatarLarge, BookingPanel, ReviewModal, UserDisplayName } from '../../components';
+import {
+  AvatarLarge,
+  BookingPanel,
+  NamedLink,
+  ReviewModal,
+  UserDisplayName,
+} from '../../components';
 import { SendMessageForm } from '../../forms';
 import config from '../../config';
 
@@ -93,7 +99,7 @@ export class TransactionPanelComponent extends Component {
     this.scrollToMessage = this.scrollToMessage.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.isMobSaf = isMobileSafari();
   }
 
@@ -164,6 +170,7 @@ export class TransactionPanelComponent extends Component {
       oldestMessagePageFetched,
       messages,
       initialMessageFailed,
+      savePaymentMethodFailed,
       fetchMessagesInProgress,
       fetchMessagesError,
       sendMessageInProgress,
@@ -184,6 +191,10 @@ export class TransactionPanelComponent extends Component {
       timeSlots,
       fetchTimeSlotsError,
       nextTransitions,
+      onFetchTransactionLineItems,
+      lineItems,
+      fetchLineItemsInProgress,
+      fetchLineItemsError,
     } = this.props;
 
     const currentTransaction = ensureTransaction(transaction);
@@ -318,6 +329,12 @@ export class TransactionPanelComponent extends Component {
       id: 'TransactionPanel.sendingMessageNotAllowed',
     });
 
+    const paymentMethodsPageLink = (
+      <NamedLink name="PaymentMethodsPage">
+        <FormattedMessage id="TransactionPanel.paymentMethodsPageLink" />
+      </NamedLink>
+    );
+
     const classes = classNames(rootClassName || css.root, className);
 
     return (
@@ -359,6 +376,14 @@ export class TransactionPanelComponent extends Component {
               <BreakdownMaybe transaction={currentTransaction} transactionRole={transactionRole} />
             </div>
 
+            {savePaymentMethodFailed ? (
+              <p className={css.genericError}>
+                <FormattedMessage
+                  id="TransactionPanel.savePaymentMethodFailed"
+                  values={{ paymentMethodsPageLink }}
+                />
+              </p>
+            ) : null}
             <FeedSection
               rootClassName={css.feedContainer}
               currentTransaction={currentTransaction}
@@ -374,7 +399,7 @@ export class TransactionPanelComponent extends Component {
             />
             {showSendMessageForm ? (
               <SendMessageForm
-                form={this.sendMessageFormName}
+                formId={this.sendMessageFormName}
                 rootClassName={css.sendMessageForm}
                 messagePlaceholder={sendMessagePlaceholder}
                 inProgress={sendMessageInProgress}
@@ -423,6 +448,10 @@ export class TransactionPanelComponent extends Component {
                   onManageDisableScrolling={onManageDisableScrolling}
                   timeSlots={timeSlots}
                   fetchTimeSlotsError={fetchTimeSlotsError}
+                  onFetchTransactionLineItems={onFetchTransactionLineItems}
+                  lineItems={lineItems}
+                  fetchLineItemsInProgress={fetchLineItemsInProgress}
+                  fetchLineItemsError={fetchLineItemsError}
                 />
               ) : null}
               <BreakdownMaybe
@@ -460,12 +489,15 @@ TransactionPanelComponent.defaultProps = {
   acceptSaleError: null,
   declineSaleError: null,
   fetchMessagesError: null,
-  initialMessageFailed: null,
+  initialMessageFailed: false,
+  savePaymentMethodFailed: false,
   sendMessageError: null,
   sendReviewError: null,
   timeSlots: null,
   fetchTimeSlotsError: null,
   nextTransitions: null,
+  lineItems: null,
+  fetchLineItemsError: null,
 };
 
 TransactionPanelComponent.propTypes = {
@@ -478,6 +510,7 @@ TransactionPanelComponent.propTypes = {
   oldestMessagePageFetched: number.isRequired,
   messages: arrayOf(propTypes.message).isRequired,
   initialMessageFailed: bool,
+  savePaymentMethodFailed: bool,
   fetchMessagesInProgress: bool.isRequired,
   fetchMessagesError: propTypes.error,
   sendMessageInProgress: bool.isRequired,
@@ -500,6 +533,12 @@ TransactionPanelComponent.propTypes = {
   declineInProgress: bool.isRequired,
   acceptSaleError: propTypes.error,
   declineSaleError: propTypes.error,
+
+  // line items
+  onFetchTransactionLineItems: func.isRequired,
+  lineItems: array,
+  fetchLineItemsInProgress: bool.isRequired,
+  fetchLineItemsError: propTypes.error,
 
   // from injectIntl
   intl: intlShape,

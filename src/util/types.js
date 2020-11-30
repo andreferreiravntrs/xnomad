@@ -22,6 +22,7 @@ import {
   bool,
   func,
   instanceOf,
+  node,
   number,
   object,
   objectOf,
@@ -190,6 +191,8 @@ const availabilityPlan = shape({
   ),
 });
 
+propTypes.availabilityPlan = availabilityPlan;
+
 const ownListingAttributes = shape({
   title: string.isRequired,
   description: string,
@@ -305,6 +308,22 @@ propTypes.stripeAccount = shape({
   type: propTypes.value('stripeAccount').isRequired,
   attributes: shape({
     stripeAccountId: string.isRequired,
+    stripeAccountData: object,
+  }),
+});
+
+propTypes.defaultPaymentMethod = shape({
+  id: propTypes.uuid.isRequired,
+  type: propTypes.value('stripePaymentMethod').isRequired,
+  attributes: shape({
+    type: propTypes.value('stripe-payment-method/card').isRequired,
+    stripePaymentMethodId: string.isRequired,
+    card: shape({
+      brand: string.isRequired,
+      expirationMonth: number.isRequired,
+      expirationYear: number.isRequired,
+      last4Digits: string.isRequired,
+    }).isRequired,
   }),
 });
 
@@ -388,36 +407,30 @@ propTypes.pagination = shape({
 });
 
 // Search filter definition
-const filterWithOptions = shape({
-  paramName: string.isRequired,
+propTypes.filterConfig = arrayOf(
+  shape({
+    id: string.isRequired,
+    label: node,
+    type: string.isRequired,
+    group: oneOf(['primary', 'secondary']).isRequired,
+    queryParamNames: arrayOf(string).isRequired,
+    config: object,
+  }).isRequired
+);
+
+propTypes.sortConfig = shape({
+  active: bool,
+  queryParamName: oneOf(['sort']).isRequired,
+  relevanceKey: string.isRequired,
+  conflictingFilters: arrayOf(string),
   options: arrayOf(
     shape({
-      key: oneOfType([string, bool, number]).isRequired,
+      key: oneOf(['createdAt', '-createdAt', 'price', '-price', 'relevance']).isRequired,
       label: string.isRequired,
+      longLabel: string,
     })
-  ).isRequired,
+  ),
 });
-const filterWithPriceConfig = shape({
-  paramName: string.isRequired,
-  config: shape({
-    min: number.isRequired,
-    max: number.isRequired,
-    step: number.isRequired,
-  }).isRequired,
-});
-
-const filterIsActiveConfig = shape({
-  paramName: string.isRequired,
-  config: shape({
-    active: bool.isRequired,
-  }).isRequired,
-});
-
-propTypes.filterConfig = oneOfType([
-  filterWithOptions,
-  filterWithPriceConfig,
-  filterIsActiveConfig,
-]);
 
 export const ERROR_CODE_TRANSACTION_LISTING_NOT_FOUND = 'transaction-listing-not-found';
 export const ERROR_CODE_TRANSACTION_INVALID_TRANSITION = 'transaction-invalid-transition';
@@ -478,5 +491,11 @@ propTypes.error = shape({
   statusText: string,
   apiErrors: arrayOf(propTypes.apiError),
 });
+
+// Options for showing just date or date and time on BookingTimeInfo and BookingBreakdown
+export const DATE_TYPE_DATE = 'date';
+export const DATE_TYPE_DATETIME = 'datetime';
+
+propTypes.dateType = oneOf([DATE_TYPE_DATE, DATE_TYPE_DATETIME]);
 
 export { propTypes };

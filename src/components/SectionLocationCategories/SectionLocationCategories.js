@@ -1,6 +1,6 @@
 import React from 'react';
 import { string, object } from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { createResourceLocatorString } from '../../util/routes';
 import { categories } from '../../marketplace-custom-config';

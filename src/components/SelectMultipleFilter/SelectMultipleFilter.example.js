@@ -11,10 +11,6 @@ const options = [
     label: 'Towels',
   },
   {
-    key: 'towels',
-    label: 'Towels',
-  },
-  {
     key: 'bathroom',
     label: 'Bathroom',
   },
@@ -42,15 +38,11 @@ const options = [
     key: 'own_food_allowed',
     label: 'Own food allowed',
   },
-  {
-    key: 'own_food_allowed',
-    label: 'Own food allowed',
-  },
 ];
 
-const handleSubmit = (urlParam, values, history) => {
+const handleSubmit = (values, history) => {
   console.log('Submitting values', values);
-  const queryParams = values ? `?${stringify({ [urlParam]: values.join(',') })}` : '';
+  const queryParams = values ? `?${stringify(values)}` : '';
   history.push(`${window.location.pathname}${queryParams}`);
 };
 
@@ -59,15 +51,15 @@ const AmenitiesFilterPopup = withRouter(props => {
 
   const params = parse(location.search);
   const amenities = params[URL_PARAM];
-  const initialValues = !!amenities ? amenities.split(',') : [];
+  const initialValues = { [URL_PARAM]: !!amenities ? amenities : null };
 
   return (
     <SelectMultipleFilter
       id="SelectMultipleFilterPopupExample"
       name="amenities"
-      urlParam={URL_PARAM}
+      queryParamNames={[URL_PARAM]}
       label="Amenities"
-      onSubmit={(urlParam, values) => handleSubmit(urlParam, values, history)}
+      onSubmit={values => handleSubmit(values, history)}
       showAsPopup={true}
       liveEdit={false}
       options={options}
@@ -88,16 +80,16 @@ const AmenitiesFilterPlain = withRouter(props => {
 
   const params = parse(location.search);
   const amenities = params[URL_PARAM];
-  const initialValues = !!amenities ? amenities.split(',') : [];
+  const initialValues = { [URL_PARAM]: !!amenities ? amenities : null };
 
   return (
     <SelectMultipleFilter
       id="SelectMultipleFilterPlainExample"
       name="amenities"
-      urlParam={URL_PARAM}
+      queryParamNames={[URL_PARAM]}
       label="Amenities"
-      onSubmit={(urlParam, values) => {
-        handleSubmit(urlParam, values, history);
+      onSubmit={values => {
+        handleSubmit(values, history);
       }}
       showAsPopup={false}
       liveEdit={true}

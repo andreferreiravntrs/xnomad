@@ -2,7 +2,7 @@ import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { createUser, createCurrentUser, createListing, fakeIntl } from '../../util/test-data';
 import { CheckoutPageComponent } from './CheckoutPage';
-import checkoutPageReducer, { SET_INITAL_VALUES, setInitialValues } from './CheckoutPage.duck';
+import checkoutPageReducer, { SET_INITIAL_VALUES, setInitialValues } from './CheckoutPage.duck';
 
 const noop = () => null;
 
@@ -21,13 +21,18 @@ describe('CheckoutPage', () => {
       currentUser: createCurrentUser('currentUser'),
       params: { id: 'listing1', slug: 'listing1' },
       sendOrderRequest: noop,
+      fetchStripeCustomer: noop,
+      stripeCustomerFetched: false,
       fetchSpeculatedTransaction: noop,
       speculateTransactionInProgress: false,
       scrollingDisabled: false,
-      onHandleCardPayment: noop,
+      onConfirmPayment: noop,
+      onConfirmCardPayment: noop,
       onInitiateOrder: noop,
       onRetrievePaymentIntent: noop,
-      handleCardPaymentInProgress: false,
+      onSavePaymentMethod: noop,
+      onSendMessage: noop,
+      confirmCardPaymentInProgress: false,
     };
     const tree = renderShallow(<CheckoutPageComponent {...props} />);
     expect(tree).toMatchSnapshot();
@@ -47,7 +52,7 @@ describe('CheckoutPage', () => {
         bookingEnd: new Date(Date.UTC(2017, 3, 16)),
       };
       const expectedAction = {
-        type: SET_INITAL_VALUES,
+        type: SET_INITIAL_VALUES,
         payload: { listing, bookingDates },
       };
 
@@ -60,6 +65,7 @@ describe('CheckoutPage', () => {
         listing: null,
         bookingData: null,
         bookingDates: null,
+        stripeCustomerFetched: false,
         speculateTransactionError: null,
         speculateTransactionInProgress: false,
         speculatedTransaction: null,
@@ -71,7 +77,7 @@ describe('CheckoutPage', () => {
         expect(checkoutPageReducer(undefined, {})).toEqual(initialValues);
       });
 
-      it('should handle SET_INITAL_VALUES', () => {
+      it('should handle SET_INITIAL_VALUES', () => {
         const listing = createListing(
           '00000000-0000-0000-0000-000000000000',
           {},
@@ -85,7 +91,7 @@ describe('CheckoutPage', () => {
         };
         const payload = { listing, bookingDates };
         const expected = { ...initialValues, ...payload };
-        expect(checkoutPageReducer({}, { type: SET_INITAL_VALUES, payload })).toEqual(expected);
+        expect(checkoutPageReducer({}, { type: SET_INITIAL_VALUES, payload })).toEqual(expected);
       });
     });
   });

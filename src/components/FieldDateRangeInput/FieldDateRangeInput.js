@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import { START_DATE, END_DATE } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import { ValidationError } from '../../components';
-import { intlShape } from 'react-intl';
+import { intlShape } from '../../util/reactIntl';
 
 import DateRangeInput from './DateRangeInput';
 import css from './FieldDateRangeInput.css';
@@ -27,12 +27,12 @@ class FieldDateRangeInputComponent extends Component {
     this.handleFocus = this.handleFocus.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     // Update focusedInput in case a new value for it is
     // passed in the props. This may occur if the focus
     // is manually set to the date picker.
-    if (nextProps.focusedInput && nextProps.focusedInput !== this.props.focusedInput) {
-      this.setState({ focusedInput: nextProps.focusedInput });
+    if (this.props.focusedInput && this.props.focusedInput !== prevProps.focusedInput) {
+      this.setState({ focusedInput: this.props.focusedInput });
     }
   }
 
@@ -89,16 +89,26 @@ class FieldDateRangeInputComponent extends Component {
     const startDateLabelClasses = classNames(css.startDateLabel, {
       [css.labelSuccess]: false, //startDateIsValid,
     });
+    const startDateBorderClasses = classNames(css.input, {
+      [css.inputSuccess]: startDateIsValid,
+      [css.inputError]: touched && !startDateIsValid && typeof error === 'string',
+      [css.hover]: this.state.focusedInput === START_DATE,
+    });
 
     // If endDate is valid label changes color and bottom border changes color too
     const endDateIsValid = value && value.endDate instanceof Date;
     const endDateLabelClasses = classNames(css.endDateLabel, {
       [css.labelSuccess]: false, //endDateIsValid,
     });
+    const endDateBorderClasses = classNames(css.input, {
+      [css.inputSuccess]: endDateIsValid,
+      [css.inputError]: touched && !endDateIsValid && typeof error === 'string',
+      [css.hover]: this.state.focusedInput === END_DATE,
+    });
 
     const label =
       startDateLabel && endDateLabel ? (
-        <div className={css.labels}>
+        <div className={classNames(css.labels, { [css.mobileMargins]: useMobileMargins })}>
           <label className={startDateLabelClasses} htmlFor={startDateId}>
             {startDateLabel}
           </label>
@@ -112,7 +122,7 @@ class FieldDateRangeInputComponent extends Component {
         </label></div>);
 
     // eslint-disable-next-line no-unused-vars
-    const { onBlur, onFocus, ...restOfInput } = input;
+    const { onBlur, onFocus, type, checked, ...restOfInput } = input;
     const inputProps = {
       unitType,
       onBlur: this.handleBlur,
@@ -138,6 +148,8 @@ class FieldDateRangeInputComponent extends Component {
             [css.mobileMargins]: useMobileMargins && !this.state.focusedInput,
           })}
         >
+          <div className={startDateBorderClasses} />
+          <div className={endDateBorderClasses} />
         </div>
         <ValidationError className={errorClasses} fieldMeta={meta} />
       </div>

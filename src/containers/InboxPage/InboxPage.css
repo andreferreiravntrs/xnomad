@@ -179,8 +179,8 @@
   }
 
   @media (--viewportLarge) {
-    margin-bottom: 24px;
-    padding-bottom: 15px;
+    margin-bottom: 16px;
+    padding-bottom: 7px;
   }
 }
 
@@ -211,7 +211,6 @@
   margin-right: 8px;
 
   @media (--viewportLarge) {
-    margin-top: 2px;
     margin-right: 15px;
   }
 }
@@ -251,7 +250,7 @@
   margin-bottom: 0;
 
   @media (--viewportMedium) {
-    margin-top: 3px;
+    margin-top: 0;
     margin-bottom: 0;
   }
 
@@ -273,26 +272,20 @@
   }
 }
 
-.bookingInfo {
-  font-size: 14px;
+.bookingInfoWrapper {
+  @apply --marketplaceTinyFontStyles;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   line-height: 14px;
-  margin-top: 3px;
+  margin-top: 2px;
+  padding-top: 2px;
 
   @media (--viewportMedium) {
-    margin-top: 8px;
+    padding-top: 0px;
+    margin-top: 2px;
     line-height: 16px;
-  }
-}
-
-.itemTimestamp {
-  /* Font */
-  @apply --marketplaceH5FontStyles;
-
-  margin-top: 0px;
-  margin-bottom: 0px;
-  @media (--viewportMedium) {
-    margin-top: 4px;
-    margin-bottom: 0;
   }
 }
 
@@ -320,6 +313,9 @@
 }
 
 .lastTransitionedAt {
+  @apply --marketplaceTinyFontStyles;
+
+  margin-top: 4px;
   text-align: right;
   color: var(--matterColor);
 }

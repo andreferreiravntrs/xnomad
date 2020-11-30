@@ -136,8 +136,8 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
     const values = priceParam ? priceParam.split(',') : [];
     return priceParam && values.length === 2
       ? {
-        price: [inSubunits(values[0]), inSubunits(values[1]) + 1].join(','),
-      }
+          price: [inSubunits(values[0]), inSubunits(values[1]) + 1].join(','),
+        }
       : {};
   };
 

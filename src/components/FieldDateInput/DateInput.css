@@ -49,7 +49,7 @@
     @apply --marketplaceInputStyles;
     border-bottom-style: solid;
     border-bottom-width: 2px;
-    border-bottom-color: var(--matterColoPrimary);
+    border-bottom-color: var(--attentionColor);
     transition: border-bottom-color var(--transitionStyle);
     transition: all 0.15s ease-out;
     background: none;
@@ -79,7 +79,7 @@
 
   & :global(.DayPickerNavigation_button__horizontal) {
     padding: 6px 9px;
-    top: 19px;
+    top: 16px;
     position: absolute;
     cursor: pointer;
     display: inline;
@@ -178,7 +178,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateInput_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     transition: all 0.2s ease-out;
   }
   /* Remove default bg-color and use our extra span instead '.renderedDay' */
@@ -192,7 +192,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateInput_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     border-radius: calc(var(--DateInput_selectionHeight) / 2);
   }
   /* Remove default bg-color and use our extra span instead '.renderedDay' */

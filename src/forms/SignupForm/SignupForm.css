@@ -57,6 +57,7 @@
 .acceptTerms {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 
   & input {
     width: 20px;

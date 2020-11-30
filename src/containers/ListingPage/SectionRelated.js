@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import config from '../../config';
 import { NamedLink } from '../../components';
 import { formatMoney } from '../../util/currency';

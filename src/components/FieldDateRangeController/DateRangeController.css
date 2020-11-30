@@ -39,6 +39,14 @@
     position: relative;
     width: 100%;
   }
+
+  & :global(.DayPickerNavigation__bottom) {
+    display: none;
+    &:first-of-type {
+      display: block;
+    }
+  }
+
   & :global(.DayPickerNavigation_button__horizontal) {
     padding: 6px 9px;
     top: 21px;
@@ -50,6 +58,10 @@
     }
     &:last-of-type {
       right: 24px;
+    }
+
+    @media (--viewportMedium) {
+      top: 18px;
     }
   }
   & :global(.DayPickerNavigation_button) {
@@ -163,7 +175,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateRangeController_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     color: var(--matterColorLight);
   }
 
@@ -178,7 +190,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateRangeController_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     color: var(--matterColorLight);
     border-top-left-radius: calc(var(--DateRangeController_selectionHeight) / 2);
     border-bottom-left-radius: calc(var(--DateRangeController_selectionHeight) / 2);
@@ -194,7 +206,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateRangeController_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     color: var(--matterColorLight);
     border-top-right-radius: calc(var(--DateRangeController_selectionHeight) / 2);
     border-bottom-right-radius: calc(var(--DateRangeController_selectionHeight) / 2);
@@ -207,7 +219,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateRangeController_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     color: var(--matterColorLight);
   }
 
@@ -217,7 +229,7 @@
     align-items: center;
     width: 100%;
     height: var(--DateRangeController_selectionHeight);
-    background-color: var(--matterColoPrimary);
+    background-color: var(--successColor);
     color: var(--matterColorLight);
     transition: all 0.2s ease-out;
   }
@@ -235,7 +247,4 @@
 .arrowIcon {
   stroke: var(--marketplaceColor);
   fill: var(--marketplaceColor);
-  height: 10px;
-  width: 10px;
-  margin-left: calc(2 * var(--spacingUnit));
 }

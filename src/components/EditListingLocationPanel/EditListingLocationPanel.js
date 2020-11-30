@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '../../util/reactIntl';
 import Geocode from 'react-geocode';
 import config from '../../config';
 import { LISTING_STATE_DRAFT } from '../../util/types';
@@ -16,8 +16,6 @@ class EditListingLocationPanel extends Component {
     super(props);
 
     this.getInitialValues = this.getInitialValues.bind(this);
-    this.loadGeoData = this.loadGeoData.bind(this);
-    this.loadFootfallData = this.loadFootfallData.bind(this);
 
     this.state = {
       initialValues: this.getInitialValues(),
@@ -83,6 +81,8 @@ class EditListingLocationPanel extends Component {
       className,
       rootClassName,
       listing,
+      disabled,
+      ready,
       onSubmit,
       onChange,
       submitButtonText,
@@ -116,7 +116,6 @@ class EditListingLocationPanel extends Component {
             const {
               selectedPlace: { address, origin },
             } = location;
-
             this.setState({
               initialValues: {
                 building,
@@ -150,6 +149,8 @@ class EditListingLocationPanel extends Component {
           }}
           onChange={onChange}
           saveActionMsg={submitButtonText}
+          disabled={disabled}
+          ready={ready}
           updated={panelUpdated}
           updateInProgress={updateInProgress}
           fetchErrors={errors}
@@ -174,6 +175,8 @@ EditListingLocationPanel.propTypes = {
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
+  disabled: bool.isRequired,
+  ready: bool.isRequired,
   onSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,

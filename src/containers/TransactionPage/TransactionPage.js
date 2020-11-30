@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
+import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
 import routeConfiguration from '../../routeConfiguration';
 import { propTypes } from '../../util/types';
@@ -35,6 +35,7 @@ import {
   sendMessage,
   sendReview,
   fetchMoreMessages,
+  fetchTransactionLineItems,
 } from './TransactionPage.duck';
 import css from './TransactionPage.css';
 
@@ -46,6 +47,7 @@ export const TransactionPageComponent = props => {
   const {
     currentUser,
     initialMessageFailedToTransaction,
+    savePaymentMethodFailed,
     fetchMessagesError,
     fetchMessagesInProgress,
     totalMessagePages,
@@ -77,6 +79,10 @@ export const TransactionPageComponent = props => {
     processTransitions,
     callSetInitialValues,
     onInitializeCardPaymentData,
+    onFetchTransactionLineItems,
+    lineItems,
+    fetchLineItemsInProgress,
+    fetchLineItemsError,
   } = props;
 
   const currentTransaction = ensureTransaction(transaction);
@@ -105,7 +111,11 @@ export const TransactionPageComponent = props => {
   };
 
   // If payment is pending, redirect to CheckoutPage
-  if (txIsPaymentPending(currentTransaction) && isCustomerRole) {
+  if (
+    txIsPaymentPending(currentTransaction) &&
+    isCustomerRole &&
+    currentTransaction.attributes.lineItems
+  ) {
     const currentBooking = ensureListing(currentTransaction.booking);
 
     const initialValues = {
@@ -217,6 +227,7 @@ export const TransactionPageComponent = props => {
       oldestMessagePageFetched={oldestMessagePageFetched}
       messages={messages}
       initialMessageFailed={initialMessageFailed}
+      savePaymentMethodFailed={savePaymentMethodFailed}
       fetchMessagesError={fetchMessagesError}
       sendMessageInProgress={sendMessageInProgress}
       sendMessageError={sendMessageError}
@@ -237,6 +248,10 @@ export const TransactionPageComponent = props => {
       onSubmitBookingRequest={handleSubmitBookingRequest}
       timeSlots={timeSlots}
       fetchTimeSlotsError={fetchTimeSlotsError}
+      onFetchTransactionLineItems={onFetchTransactionLineItems}
+      lineItems={lineItems}
+      fetchLineItemsInProgress={fetchLineItemsInProgress}
+      fetchLineItemsError={fetchLineItemsError}
     />
   ) : (
     loadingOrFailedFetching
@@ -270,12 +285,15 @@ TransactionPageComponent.defaultProps = {
   transaction: null,
   fetchMessagesError: null,
   initialMessageFailedToTransaction: null,
+  savePaymentMethodFailed: false,
   sendMessageError: null,
   timeSlots: null,
   fetchTimeSlotsError: null,
+  lineItems: null,
+  fetchLineItemsError: null,
 };
 
-const { bool, func, oneOf, shape, string, arrayOf, number } = PropTypes;
+const { bool, func, oneOf, shape, string, array, arrayOf, number } = PropTypes;
 
 TransactionPageComponent.propTypes = {
   params: shape({ id: string }).isRequired,
@@ -295,6 +313,7 @@ TransactionPageComponent.propTypes = {
   oldestMessagePageFetched: number.isRequired,
   messages: arrayOf(propTypes.message).isRequired,
   initialMessageFailedToTransaction: propTypes.uuid,
+  savePaymentMethodFailed: bool,
   sendMessageInProgress: bool.isRequired,
   sendMessageError: propTypes.error,
   onShowMoreMessages: func.isRequired,
@@ -303,6 +322,12 @@ TransactionPageComponent.propTypes = {
   fetchTimeSlotsError: propTypes.error,
   callSetInitialValues: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
+  onFetchTransactionLineItems: func.isRequired,
+
+  // line items
+  lineItems: array,
+  fetchLineItemsInProgress: bool.isRequired,
+  fetchLineItemsError: propTypes.error,
 
   // from withRouter
   history: shape({
@@ -330,6 +355,7 @@ const mapStateToProps = state => {
     oldestMessagePageFetched,
     messages,
     initialMessageFailedToTransaction,
+    savePaymentMethodFailed,
     sendMessageInProgress,
     sendMessageError,
     sendReviewInProgress,
@@ -337,6 +363,9 @@ const mapStateToProps = state => {
     timeSlots,
     fetchTimeSlotsError,
     processTransitions,
+    lineItems,
+    fetchLineItemsInProgress,
+    fetchLineItemsError,
   } = state.TransactionPage;
   const { currentUser } = state.user;
 
@@ -358,6 +387,7 @@ const mapStateToProps = state => {
     oldestMessagePageFetched,
     messages,
     initialMessageFailedToTransaction,
+    savePaymentMethodFailed,
     sendMessageInProgress,
     sendMessageError,
     sendReviewInProgress,
@@ -365,6 +395,9 @@ const mapStateToProps = state => {
     timeSlots,
     fetchTimeSlotsError,
     processTransitions,
+    lineItems,
+    fetchLineItemsInProgress,
+    fetchLineItemsError,
   };
 };
 
@@ -380,6 +413,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(sendReview(role, tx, reviewRating, reviewContent)),
     callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
+    onFetchTransactionLineItems: (bookingData, listingId, isOwnListing) =>
+      dispatch(fetchTransactionLineItems(bookingData, listingId, isOwnListing)),
   };
 };
 

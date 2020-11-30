@@ -27,7 +27,7 @@
   width: calc(100% - 52px);
 
   border-bottom-width: 2px;
-  border-bottom-color: var(--matterColoPrimary);
+  border-bottom-color: var(--attentionColor);
   background-color: transparent;
 
   @media (--viewportMedium) {

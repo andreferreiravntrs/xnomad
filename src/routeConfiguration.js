@@ -17,7 +17,8 @@ import {
   PasswordChangePage,
   PasswordRecoveryPage,
   PasswordResetPage,
-  PayoutPreferencesPage,
+  StripePayoutPage,
+  PaymentMethodsPage,
   PrivacyPolicyPage,
   ProfilePage,
   ProfileSettingsPage,
@@ -35,7 +36,8 @@ import { NamedRedirect } from './components';
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
   'PasswordChangePage',
-  'PayoutPreferencesPage',
+  'StripePayoutPage',
+  'PaymentMethodsPage',
 ];
 
 // https://en.wikipedia.org/wiki/Universally_unique_identifier#Nil_UUID
@@ -43,6 +45,12 @@ const draftId = '00000000-0000-0000-0000-000000000000';
 const draftSlug = 'draft';
 
 const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
+
+// NOTE: Most server-side endpoints are prefixed with /api. Requests to those
+// endpoints are indended to be handled in the server instead of the browser and
+// they will not render the application. So remember to avoid routes starting
+// with /api and if you encounter clashing routes see server/index.js if there's
+// a conflicting route defined there.
 
 // Our routes are exact by default.
 // See behaviour from Routes.js where Route is created.
@@ -141,6 +149,13 @@ const routeConfiguration = () => {
       component: props => <EditListingPage {...props} />,
       loadData: EditListingPage.loadData,
     },
+    {
+      path: '/l/:slug/:id/:type/:tab/:returnURLType',
+      name: 'EditListingStripeOnboardingPage',
+      auth: true,
+      component: props => <EditListingPage {...props} />,
+      loadData: EditListingPage.loadData,
+    },
 
     // Canonical path should be after the `/l/new` path since they
     // conflict and `new` is not a valid listing UUID.
@@ -168,6 +183,10 @@ const routeConfiguration = () => {
       authPage: 'LoginPage',
       component: props => <ProfileSettingsPage {...props} />,
     },
+
+    // Note: authenticating with IdP (e.g. Facebook) expects that /login path exists
+    // so that in the error case users can be redirected back to the LoginPage
+    // In case you change this, remember to update the route in server/api/auth/loginWithIdp.js
     {
       path: '/login',
       name: 'LoginPage',
@@ -177,6 +196,11 @@ const routeConfiguration = () => {
       path: '/signup',
       name: 'SignupPage',
       component: props => <AuthenticationPage {...props} tab="signup" />,
+    },
+    {
+      path: '/confirm',
+      name: 'ConfirmPage',
+      component: props => <AuthenticationPage {...props} tab="confirm" />,
     },
     {
       path: '/recover-password',
@@ -261,11 +285,27 @@ const routeConfiguration = () => {
     },
     {
       path: '/account/payments',
-      name: 'PayoutPreferencesPage',
+      name: 'StripePayoutPage',
       auth: true,
       authPage: 'LoginPage',
-      component: props => <PayoutPreferencesPage {...props} />,
-      loadData: PayoutPreferencesPage.loadData,
+      component: props => <StripePayoutPage  {...props} />,
+      loadData: StripePayoutPage .loadData,
+    },
+    {
+      path: '/account/payments/:returnURLType',
+      name: 'StripePayoutOnboardingPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: props => <StripePayoutPage {...props} />,
+      loadData: StripePayoutPage.loadData,
+    },
+    {
+      path: '/account/payment-methods',
+      name: 'PaymentMethodsPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: props => <PaymentMethodsPage {...props} />,
+      loadData: PaymentMethodsPage.loadData,
     },
     {
       path: '/terms-of-service',

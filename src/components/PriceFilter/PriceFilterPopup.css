@@ -52,10 +52,9 @@
   }
 
   .arrowIcon {
-    @apply --marketplaceSearchFilterLabelFontStyles; 
+    @apply --marketplaceSearchFilterLabelFontStyles;
   }
 }
-
 
 .arrowIcon {
   height: 10px;

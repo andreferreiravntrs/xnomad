@@ -22,7 +22,9 @@ export const isSafeNumber = decimalValue => {
 // Get the minor unit divisor for the given currency
 export const unitDivisor = currency => {
   if (!has(subUnitDivisors, currency)) {
-    throw new Error(`No minor unit divisor defined for currency: ${currency}`);
+    throw new Error(
+      `No minor unit divisor defined for currency: ${currency} in currency-config.js`
+    );
   }
   return subUnitDivisors[currency];
 };
@@ -248,14 +250,15 @@ export const formatMoney = (intl, value) => {
 
   // See: https://github.com/yahoo/react-intl/wiki/API#formatnumber
   const numberFormatOptions = {
+    style: 'currency',
+    currency: value.currency,
+    currencyDisplay: 'symbol',
     useGrouping: true,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   };
 
-  const formattedValue = intl.formatNumber(valueAsNumber, numberFormatOptions);
-
-  return formattedValue.replace(/,/g, ".");
+  return intl.formatNumber(valueAsNumber, numberFormatOptions);
 };
 
 /**
@@ -274,12 +277,13 @@ export const formatCurrencyMajorUnit = (intl, currency, valueWithoutSubunits) =>
 
   // See: https://github.com/yahoo/react-intl/wiki/API#formatnumber
   const numberFormatOptions = {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'symbol',
     useGrouping: true,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   };
 
-  const formattedValue = intl.formatNumber(valueAsNumber, numberFormatOptions);
-
-  return formattedValue.replace(/,/g, ".");
+  return intl.formatNumber(valueAsNumber, numberFormatOptions);
 };

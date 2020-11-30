@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bool, func, object, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { Form, Button, FieldTextInput } from '../../components';
@@ -16,11 +16,12 @@ export class EditListingAvailabilityFormComponent extends Component {
     return (
       <FinalForm
         {...this.props}
-        render={fieldRenderProps => {
+        render={formRenderProps => {
           const {
             className,
             rootClassName,
             disabled,
+            ready,
             handleSubmit,
             intl,
             invalid,
@@ -32,7 +33,7 @@ export class EditListingAvailabilityFormComponent extends Component {
             availability,
             availabilityPlan,
             listingId,
-          } = fieldRenderProps;
+          } = formRenderProps;
 
           const errorMessage = updateError ? (
             <p className={css.error}>
@@ -41,7 +42,7 @@ export class EditListingAvailabilityFormComponent extends Component {
           ) : null;
 
           const classes = classNames(rootClassName || css.root, className);
-          const submitReady = updated && pristine;
+          const submitReady = (updated && pristine) || ready;
           const submitInProgress = updateInProgress;
           const submitDisabled = invalid || disabled || submitInProgress;
 
@@ -99,10 +100,13 @@ EditListingAvailabilityFormComponent.propTypes = {
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,
+  disabled: bool.isRequired,
+  ready: bool.isRequired,
   updated: bool.isRequired,
   updateError: propTypes.error,
   updateInProgress: bool.isRequired,
   availability: object.isRequired,
+  availabilityPlan: propTypes.availabilityPlan.isRequired,
 };
 
 export default compose(injectIntl)(EditListingAvailabilityFormComponent);

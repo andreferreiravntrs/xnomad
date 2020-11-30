@@ -86,7 +86,7 @@ exports[`InboxPage matches snapshot 1`] = `
                 "formatMessage": [Function],
                 "formatNumber": [Function],
                 "formatPlural": [Function],
-                "formatRelative": [Function],
+                "formatRelativeTime": [Function],
                 "formatTime": [Function],
                 "now": [Function],
               }
@@ -239,7 +239,7 @@ exports[`InboxPage matches snapshot 1`] = `
                 "formatMessage": [Function],
                 "formatNumber": [Function],
                 "formatPlural": [Function],
-                "formatRelative": [Function],
+                "formatRelativeTime": [Function],
                 "formatTime": [Function],
                 "now": [Function],
               }
@@ -387,7 +387,7 @@ exports[`InboxPage matches snapshot 1`] = `
       className={null}
       rootClassName={null}
     >
-      <InjectIntl(Footer) />
+      <injectIntl(Footer) />
     </LayoutWrapperFooter>
   </LayoutSideNavigation>
 </Page>
@@ -429,10 +429,16 @@ exports[`InboxPage matches snapshot 2`] = `
       <div
         className=""
       >
-        2017-02-15 - 2017-02-16
-        <span>
-          10
-        </span>
+        <div
+          className=""
+        >
+          <span>
+            Feb 15 -
+          </span>
+          <span>
+            Feb 16
+          </span>
+        </div>
       </div>
     </div>
     <div>
@@ -538,7 +544,7 @@ exports[`InboxPage matches snapshot 3`] = `
                 "formatMessage": [Function],
                 "formatNumber": [Function],
                 "formatPlural": [Function],
-                "formatRelative": [Function],
+                "formatRelativeTime": [Function],
                 "formatTime": [Function],
                 "now": [Function],
               }
@@ -691,7 +697,7 @@ exports[`InboxPage matches snapshot 3`] = `
                 "formatMessage": [Function],
                 "formatNumber": [Function],
                 "formatPlural": [Function],
-                "formatRelative": [Function],
+                "formatRelativeTime": [Function],
                 "formatTime": [Function],
                 "now": [Function],
               }
@@ -839,7 +845,7 @@ exports[`InboxPage matches snapshot 3`] = `
       className={null}
       rootClassName={null}
     >
-      <InjectIntl(Footer) />
+      <injectIntl(Footer) />
     </LayoutWrapperFooter>
   </LayoutSideNavigation>
 </Page>
@@ -883,10 +889,16 @@ exports[`InboxPage matches snapshot 4`] = `
       <div
         className=""
       >
-        2017-02-15 - 2017-02-16
-        <span>
-          9
-        </span>
+        <div
+          className=""
+        >
+          <span>
+            Feb 15 -
+          </span>
+          <span>
+            Feb 16
+          </span>
+        </div>
       </div>
     </div>
     <div>

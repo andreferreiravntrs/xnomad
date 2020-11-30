@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
 import { array, arrayOf, bool, func, shape, string, oneOf } from 'prop-types';
-import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
+import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
+import { findOptionsForSelectFilter } from '../../util/search';
 import { LISTING_STATE_PENDING_APPROVAL, LISTING_STATE_CLOSED, propTypes } from '../../util/types';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import {
@@ -41,7 +42,12 @@ import {
 } from '../../components';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
-import { sendEnquiry, loadData, setInitialValues } from './ListingPage.duck';
+import {
+  sendEnquiry,
+  loadData,
+  setInitialValues,
+  fetchTransactionLineItems,
+} from './ListingPage.duck';
 import SectionImages from './SectionImages';
 import SectionHeading from './SectionHeading';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
@@ -111,10 +117,13 @@ export class ListingPageComponent extends Component {
       confirmPaymentError: null,
     };
 
+    const saveToSessionStorage = !this.props.currentUser;
+
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
-    callSetInitialValues(setInitialValues, initialValues);
+
+    callSetInitialValues(setInitialValues, initialValues, saveToSessionStorage);
 
     // Clear previous Stripe errors from store if there is any
     onInitializeCardPaymentData();
@@ -184,7 +193,11 @@ export class ListingPageComponent extends Component {
       sendEnquiryError,
       timeSlots,
       fetchTimeSlotsError,
-      amenitiesConfig,
+      filterConfig,
+      onFetchTransactionLineItems,
+      lineItems,
+      fetchLineItemsInProgress,
+      fetchLineItemsError,
     } = this.props;
 
     const listingId = new UUID(rawParams.id);
@@ -239,7 +252,7 @@ export class ListingPageComponent extends Component {
         })}
       </span>
     );
-    
+
     const topbar = <TopbarContainer />;
 
     if (showListingError && showListingError.status === 404) {
@@ -360,6 +373,7 @@ export class ListingPageComponent extends Component {
       </NamedLink>
     );
 
+    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig);
     const categories = publicData && publicData.categories ? publicData.categories : [];
 
     const area =
@@ -438,7 +452,7 @@ export class ListingPageComponent extends Component {
                   <SectionHeadingFeatures categories={categories} area={area} />
                   <SectionDescriptionMaybe description={description} />
                   <div className={css.bottomContainer}>
-                    <SectionFeaturesMaybe options={amenitiesConfig} publicData={publicData} />
+                    <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
                     <SectionRulesMaybe publicData={publicData} />
                   </div>
                   <SectionAuxMaybe publicData={publicData} />
@@ -484,8 +498,9 @@ ListingPageComponent.defaultProps = {
   timeSlots: null,
   fetchTimeSlotsError: null,
   sendEnquiryError: null,
-  categoriesConfig: config.custom.categories,
-  amenitiesConfig: config.custom.amenities,
+  filterConfig: config.custom.filters,
+  lineItems: null,
+  fetchLineItemsError: null,
 };
 
 ListingPageComponent.propTypes = {
@@ -524,9 +539,11 @@ ListingPageComponent.propTypes = {
   sendEnquiryError: propTypes.error,
   onSendEnquiry: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
-
-  categoriesConfig: array,
-  amenitiesConfig: array,
+  filterConfig: array,
+  onFetchTransactionLineItems: func.isRequired,
+  lineItems: array,
+  fetchLineItemsInProgress: bool.isRequired,
+  fetchLineItemsError: propTypes.error,
 };
 
 const mapStateToProps = state => {
@@ -539,6 +556,9 @@ const mapStateToProps = state => {
     fetchTimeSlotsError,
     sendEnquiryInProgress,
     sendEnquiryError,
+    lineItems,
+    fetchLineItemsInProgress,
+    fetchLineItemsError,
     enquiryModalOpenForListingId,
   } = state.ListingPage;
   const { currentUser } = state.user;
@@ -567,6 +587,9 @@ const mapStateToProps = state => {
     fetchReviewsError,
     timeSlots,
     fetchTimeSlotsError,
+    lineItems,
+    fetchLineItemsInProgress,
+    fetchLineItemsError,
     sendEnquiryInProgress,
     sendEnquiryError,
   };
@@ -575,7 +598,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onManageDisableScrolling: (componentId, disableScrolling) =>
     dispatch(manageDisableScrolling(componentId, disableScrolling)),
-  callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
+  callSetInitialValues: (setInitialValues, values, saveToSessionStorage) =>
+    dispatch(setInitialValues(values, saveToSessionStorage)),
+  onFetchTransactionLineItems: (bookingData, listingId, isOwnListing) =>
+    dispatch(fetchTransactionLineItems(bookingData, listingId, isOwnListing)),
   onSendEnquiry: (listingId, message) => dispatch(sendEnquiry(listingId, message)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
 });

@@ -22,7 +22,6 @@ require('./env').configureEnv();
 const http = require('http');
 const https = require('https');
 const express = require('express');
-const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
@@ -30,16 +29,17 @@ const bodyParser = require('body-parser');
 const enforceSsl = require('express-enforces-ssl');
 const path = require('path');
 const sharetribeSdk = require('sharetribe-flex-sdk');
-const Decimal = require('decimal.js');
 const sitemap = require('express-sitemap');
+const passport = require('passport');
 const auth = require('./auth');
+const apiRouter = require('./apiRouter');
 const renderer = require('./renderer');
 const dataLoader = require('./dataLoader');
 const fs = require('fs');
 const log = require('./log');
 const { sitemapStructure } = require('./sitemap');
 const csp = require('./csp');
-const { Client } = require('pg');
+const sdkUtils = require('./api-util/sdk');
 
 const buildPath = path.resolve(__dirname, '..', 'build');
 const env = process.env.REACT_APP_ENV;
@@ -70,7 +70,14 @@ app.use(log.requestHandler());
 
 // The helmet middleware sets various HTTP headers to improve security.
 // See: https://www.npmjs.com/package/helmet
-app.use(helmet());
+// Helmet 4 doesn't disable CSP by default so we need to do that explicitly.
+// If csp is enabled we will add that separately.
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 if (cspEnabled) {
   // When a CSP directive is violated, the browser posts a JSON body
@@ -85,8 +92,13 @@ if (cspEnabled) {
   // browser checks the policy and calls the report URL when the
   // policy is violated, but doesn't block any requests. In block
   // mode, the browser also blocks the requests.
+
+  // In Helmet 4,supplying functions as directive values is not supported.
+  // That's why we need to create own middleware function that calls the Helmet's middleware function
   const reportOnly = CSP === 'report';
-  app.use(csp(cspReportUrl, USING_SSL, reportOnly));
+  app.use((req, res, next) => {
+    csp(cspReportUrl, USING_SSL, reportOnly)(req, res, next);
+  });
 }
 
 // Redirect HTTP to HTTPS if USING_SSL is `true`.
@@ -118,7 +130,6 @@ app.use('/static', express.static(path.join(buildPath, 'static')));
 // server robots.txt from the root
 app.use('/robots.txt', express.static(path.join(buildPath, 'robots.txt')));
 app.use(cookieParser());
-app.use(cors());
 
 // Use basic authentication when not in dev mode. This is
 // intentionally after the static middleware to skip basic auth for
@@ -135,6 +146,15 @@ if (!dev) {
   }
 }
 
+// Initialize Passport.js  (http://www.passportjs.org/)
+// Passport is authentication middleware for Node.js
+// We use passport to enable authenticating with
+// a 3rd party identity provider (e.g. Facebook or Google)
+app.use(passport.initialize());
+
+// Server-side routes that do not render the application
+app.use('/api', apiRouter);
+
 const noCacheHeaders = {
   'Cache-control': 'no-cache, no-store, must-revalidate',
 };
@@ -145,40 +165,6 @@ const noCacheHeaders = {
 // for setting up new TCP connections.
 const httpAgent = new http.Agent({ keepAlive: true });
 const httpsAgent = new https.Agent({ keepAlive: true });
-
-app.get('/api/footfall', (req, res) => {
-  const lat = req.query.lat;
-  const lng = req.query.lng;
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  });
-
-  client.connect();
-
-  client.query(
-    'SELECT average_activities, weekday, size FROM mtc_grids LEFT JOIN activity_weekday ON id = dominant_zone ' +
-      "WHERE 0 - (vector(position1_lat,'" +
-      lat +
-      "') * vector(position1_lng,position2_lng) - vector(position1_lng,'" +
-      lng +
-      "') * vector(position1_lat,position2_lat)) / " +
-      '(vector(position1_lat,position2_lat) * vector(position1_lng,position4_lng) - ' +
-      'vector(position1_lng,position2_lng) * vector(position1_lat,position4_lat)) BETWEEN 0 AND 1 AND' +
-      "(vector(position1_lat,'" +
-      lat +
-      "') * vector(position1_lng,position4_lng) - vector(position1_lng,'" +
-      lng +
-      "') * vector(position1_lat,position4_lat)) / " +
-      '(vector(position1_lat,position2_lat) * vector(position1_lng,position4_lng) - ' +
-      'vector(position1_lng,position2_lng) * vector(position1_lat,position4_lat)) BETWEEN 0 AND 1;',
-    (err, queryRes) => {
-      if (err) throw err;
-      res.send(queryRes.rows);
-      client.end();
-    }
-  );
-});
 
 app.get('*', (req, res) => {
   if (req.url.startsWith('/static/')) {
@@ -212,14 +198,7 @@ app.get('*', (req, res) => {
     httpAgent: httpAgent,
     httpsAgent: httpsAgent,
     tokenStore,
-    typeHandlers: [
-      {
-        type: sharetribeSdk.types.BigDecimal,
-        customType: Decimal,
-        writer: v => new sharetribeSdk.types.BigDecimal(v.toString()),
-        reader: v => new Decimal(v.value),
-      },
-    ],
+    typeHandlers: sdkUtils.typeHandlers,
     ...baseUrl,
   });
 
@@ -245,17 +224,17 @@ app.get('*', (req, res) => {
         // Routes component injects the context.unauthorized when the
         // user isn't logged in to view the page that requires
         // authentication.
-
-        const token = tokenStore.getToken();
-        const refreshTokenExists = !!token && !!token.refresh_token;
-
-        if (refreshTokenExists) {
-          // If refresh token exists, we assume that client can handle the situation
-          // TODO: improve by checking if the token is valid (needs an API call)
-          res.status(200).send(html);
-        } else {
-          res.status(401).send(html);
-        }
+        sdk.authInfo().then(authInfo => {
+          if (authInfo && authInfo.isAnonymous === false) {
+            // It looks like the user is logged in.
+            // Full verification would require actual call to API
+            // to refresh the access token
+            res.status(200).send(html);
+          } else {
+            // Current token is anonymous.
+            res.status(401).send(html);
+          }
+        });
       } else if (context.forbidden) {
         res.status(403).send(html);
       } else if (context.url) {

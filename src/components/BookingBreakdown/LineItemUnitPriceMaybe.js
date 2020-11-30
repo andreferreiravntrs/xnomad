@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, intlShape } from 'react-intl';
+import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
 
@@ -23,10 +23,10 @@ const LineItemUnitPriceMaybe = props => {
 
   return formattedUnitPrice ? (
     <div className={css.lineItem}>
-      <label className={css.itemLabel}>
+      <span className={css.itemLabel}>
         <FormattedMessage id={translationKey} />
-      </label>
-      <span className={css.itemValue}>{formattedUnitPrice} {unitPurchase.unitPrice.currency}</span>
+      </span>
+      <span className={css.itemValue}>{formattedUnitPrice}</span>
     </div>
   ) : null;
 };
